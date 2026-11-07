@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Copy, Check, ArrowRight, ShieldCheck, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Wrap } from "@/components/shell";
 import { TermToggle } from "@/components/term-toggle";
@@ -35,8 +36,8 @@ export const Route = createFileRoute("/checkout")({
   }),
   head: () => ({
     meta: [
-      { title: "Checkout — Vela" },
-      { name: "description", content: "Sandbox crypto invoice for a Vela workspace. No KYC. No real funds." },
+      { title: "Instant Activation — Vela Communications Cloud" },
+      { name: "description", content: "Instant crypto invoice for Vela cloud communications. No KYC. No credit card." },
     ],
   }),
   component: CheckoutPage,
@@ -46,7 +47,6 @@ function CheckoutPage() {
   const search = Route.useSearch();
   const navigate = useNavigate();
   const settle = useVela((state) => state.settle);
-  const active = useVela((state) => state.active);
   const [planId, setPlanId] = useState<PlanId>(search.plan);
   const [term, setTerm] = useState<Term>(search.term);
   const [assetId, setAssetId] = useState<AssetId>("usdt");
@@ -59,9 +59,8 @@ function CheckoutPage() {
   const finished = useRef(false);
 
   useEffect(() => {
-    setPlanId(search.plan);
-    setTerm(search.term);
-  }, [search.plan, search.term]);
+    setSuggestion(suggestCallsign());
+  }, []);
 
   const plan = planById(planId);
   const usd = termPrice(plan.price, term);
@@ -79,6 +78,7 @@ function CheckoutPage() {
       window.setTimeout(() => finish(), 2200),
     ];
     return () => timers.forEach((id) => window.clearTimeout(id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watching]);
 
   function finish() {
@@ -93,28 +93,36 @@ function CheckoutPage() {
     try {
       await navigator.clipboard.writeText(asset.address);
       setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
     }
   }
 
   return (
-    <Wrap className="py-12 md:py-16">
-      <p className="text-xs uppercase tracking-widest text-volt">Checkout</p>
-      <h1 className="mt-3 text-4xl leading-tight sm:text-5xl">Pay the workspace. Skip the paperwork.</h1>
-      <p className="mt-4 max-w-2xl text-muted">
-        {active
-          ? "Settling again replaces the current sandbox plan."
-          : "A callsign is the only field. No legal name, no card, no inbox."}
-      </p>
+    <Wrap className="py-10 md:py-16">
+      <div className="max-w-2xl mb-8">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1 text-xs text-muted backdrop-blur-md mb-3">
+          <ShieldCheck className="size-3.5 text-ios-green" />
+          <span className="font-semibold text-white">Instant Private Activation</span>
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white">
+          Reserve your communications workspace
+        </h1>
+        <p className="mt-2 text-sm text-muted">
+          No credit card, no identity documents, no per-agent agreements. Settle in crypto and start instantly.
+        </p>
+      </div>
 
-      <div className="mt-10 grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
-        <div className="min-w-0 rounded-lg border border-line bg-raised p-5 md:p-6">
+      <div className="grid gap-8 lg:grid-cols-12 items-start">
+        {/* Main Form or Invoice */}
+        <div className="ios-glass rounded-3xl p-6 sm:p-8 border border-white/10 lg:col-span-8 shadow-2xl">
           {step === "draft" ? (
-            <>
-              <fieldset>
-                <legend className="text-sm text-muted">Plan</legend>
-                <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            <div className="space-y-8">
+              {/* Plan Picker */}
+              <div>
+                <p className="text-xs uppercase tracking-wider text-muted font-semibold mb-3">1. Select Tier</p>
+                <div className="grid gap-3 sm:grid-cols-3">
                   {PLANS.map((item) => (
                     <button
                       key={item.id}
@@ -122,24 +130,31 @@ function CheckoutPage() {
                       aria-pressed={planId === item.id}
                       onClick={() => setPlanId(item.id)}
                       className={cn(
-                        "min-h-16 rounded-md border px-3 py-3 text-left",
-                        planId === item.id ? "border-volt" : "border-line",
+                        "p-4 rounded-2xl border text-left transition-all",
+                        planId === item.id
+                          ? "border-volt/60 bg-volt/[0.08] shadow-md shadow-volt/10"
+                          : "border-white/10 bg-white/[0.02] hover:border-white/20",
                       )}
                     >
-                      <span className="block text-sm">{item.name}</span>
-                      <span className="mt-1 block tabular-nums text-xs text-muted">{item.price} USDT</span>
+                      <span className="block text-sm font-semibold text-white">{item.name}</span>
+                      <span className="mt-1 block font-mono text-sm text-volt tabular-nums">
+                        {item.price} USDT <span className="text-xs text-muted">/ mo</span>
+                      </span>
                     </button>
                   ))}
                 </div>
-              </fieldset>
+              </div>
 
-              <div className="mt-6">
+              {/* Term Toggle */}
+              <div>
+                <p className="text-xs uppercase tracking-wider text-muted font-semibold mb-3">2. Billing Cycle</p>
                 <TermToggle term={term} onChange={setTerm} />
               </div>
 
-              <div className="mt-6">
-                <p className="text-sm text-muted">Asset</p>
-                <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {/* Asset Selector */}
+              <div>
+                <p className="text-xs uppercase tracking-wider text-muted font-semibold mb-3">3. Settlement Asset</p>
+                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                   {ASSETS.map((item) => (
                     <button
                       key={item.id}
@@ -147,93 +162,156 @@ function CheckoutPage() {
                       aria-pressed={assetId === item.id}
                       onClick={() => setAssetId(item.id)}
                       className={cn(
-                        "min-h-14 rounded-md border px-3 py-2 text-left",
-                        assetId === item.id ? "border-volt bg-bg" : "border-line",
+                        "p-3 rounded-2xl border text-left transition-all",
+                        assetId === item.id
+                          ? "border-volt/60 bg-volt/[0.08] shadow-sm shadow-volt/10"
+                          : "border-white/10 bg-white/[0.02] hover:border-white/20",
                       )}
                     >
-                      <span className="block text-sm">{item.label}</span>
-                      <span className="block text-xs text-faint">{item.network}</span>
+                      <span className="block text-sm font-semibold text-white">{item.label}</span>
+                      <span className="block text-xs text-muted font-mono">{item.network}</span>
                     </button>
                   ))}
                 </div>
-                <p className="mt-2 text-xs text-faint">Preview quotes, not a live market.</p>
               </div>
 
-              <div className="mt-6">
-                <label htmlFor="callsign" className="text-sm text-muted">
-                  Callsign
+              {/* Callsign / Anonymous Handle */}
+              <div>
+                <label htmlFor="callsign" className="text-xs uppercase tracking-wider text-muted font-semibold block mb-2">
+                  4. Callsign (Private Workspace Handle)
                 </label>
-                <input
-                  id="callsign"
-                  value={name}
-                  autoComplete="off"
-                  placeholder={suggestion}
-                  onChange={(event) => setName(event.target.value)}
-                  className="mt-2 h-11 w-full rounded-md border border-line bg-bg px-3 text-sm"
-                />
-                <div className="mt-2 flex flex-wrap items-center gap-3">
-                  <button type="button" className="min-h-11 text-sm text-volt" onClick={() => setName(suggestion)}>
-                    Use {suggestion}
-                  </button>
+                <div className="relative">
+                  <input
+                    id="callsign"
+                    value={name}
+                    autoComplete="off"
+                    placeholder={suggestion}
+                    onChange={(event) => setName(event.target.value)}
+                    className="h-12 w-full rounded-2xl border border-white/10 bg-black/40 px-4 text-sm font-mono text-white placeholder:text-muted/50 focus:outline-none focus:ring-1 focus:ring-volt"
+                  />
+                </div>
+
+                <div className="mt-2.5 flex items-center gap-3 text-xs">
                   <button
                     type="button"
-                    className="min-h-11 text-sm text-muted"
+                    className="text-volt font-medium hover:underline flex items-center gap-1"
+                    onClick={() => setName(suggestion)}
+                  >
+                    <span>Use &ldquo;{suggestion}&rdquo;</span>
+                  </button>
+                  <span className="text-muted/40">·</span>
+                  <button
+                    type="button"
+                    className="text-muted hover:text-white flex items-center gap-1"
                     onClick={() => setSuggestion(suggestCallsign())}
                   >
-                    Shuffle
+                    <RefreshCw className="size-3" />
+                    <span>Shuffle</span>
                   </button>
                 </div>
+
                 {invalid ? (
-                  <p className="text-sm text-volt">Use 3–16 letters or digits, starting with a letter.</p>
+                  <p className="mt-2 text-xs text-red-400">Must be 3–16 letters or digits starting with a letter.</p>
                 ) : (
-                  <p className="text-sm text-faint">This is the account. We do not ask who it belongs to.</p>
+                  <p className="mt-2 text-xs text-muted">
+                    This callsign represents the entire account. No personal identity is linked or required.
+                  </p>
                 )}
               </div>
 
-              <Button className="mt-6" size="lg" disabled={invalid} onClick={() => setStep("invoice")}>
-                Create invoice
+              <Button
+                className="w-full sm:w-auto"
+                size="lg"
+                disabled={Boolean(invalid)}
+                onClick={() => setStep("invoice")}
+              >
+                <span>Generate Sandbox Invoice</span>
+                <ArrowRight className="size-4" />
               </Button>
-            </>
+            </div>
           ) : (
-            <>
-              <p className="text-xs uppercase tracking-widest text-volt">Sandbox — do not send funds</p>
-              <h2 className="mt-2 font-display text-3xl font-medium">
-                {amount} {asset.label}
-              </h2>
-              <p className="mt-2 text-sm text-muted">
-                {usd} USDT credit · {asset.network} · {cleaned} · {plan.name}
-              </p>
-              <div className="mt-5 flex flex-wrap items-start gap-5">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between border-b border-line pb-4">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-volt">
+                    Sandbox Settlement Node
+                  </span>
+                  <h2 className="mt-1 text-3xl font-semibold text-white tracking-tight">
+                    {amount} {asset.label}
+                  </h2>
+                  <p className="text-xs text-muted mt-0.5">
+                    {usd} USDT value on {asset.network} · Callsign: <span className="font-mono text-white font-medium">{cleaned}</span>
+                  </p>
+                </div>
+
+                <span className="rounded-full bg-ios-green/15 text-ios-green border border-ios-green/30 px-3 py-1 text-xs font-semibold">
+                  Quote Active
+                </span>
+              </div>
+
+              {/* QR and Address Card */}
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 p-5 rounded-2xl bg-black/40 border border-white/5">
                 <InvoiceQr value={`vela-sandbox:${asset.label}:${amount}:${asset.address}`} />
-                <div className="min-w-0 flex-1">
-                  <p className="text-xs uppercase tracking-widest text-faint">Address</p>
-                  <p className="mt-2 text-sm break-all text-fg">{asset.address}</p>
-                  <Button variant="line" className="mt-3" onClick={() => void copyAddress()}>
-                    {copied ? "Copied" : "Copy address"}
-                  </Button>
-                  <p className="mt-4 text-sm text-muted">
-                    These addresses are not wallets. Nothing is monitoring them. The button below only pretends
-                    the chain confirmed.
+
+                <div className="min-w-0 flex-1 w-full">
+                  <span className="text-xs uppercase tracking-wider text-muted font-semibold block">
+                    Deposit Address ({asset.network})
+                  </span>
+
+                  <p className="mt-2 text-xs font-mono break-all text-white p-3 rounded-xl bg-white/[0.04] border border-white/10 select-all">
+                    {asset.address}
+                  </p>
+
+                  <div className="mt-3 flex items-center gap-3">
+                    <Button variant="line" size="sm" onClick={() => void copyAddress()}>
+                      {copied ? <Check className="size-3.5 text-ios-green" /> : <Copy className="size-3.5" />}
+                      <span>{copied ? "Address Copied" : "Copy Address"}</span>
+                    </Button>
+                  </div>
+
+                  <p className="mt-4 text-xs text-muted leading-relaxed">
+                    Sandbox simulation: Click &ldquo;Confirm & Unlock Workspace&rdquo; below to simulate instantaneous on-chain confirmation.
                   </p>
                 </div>
               </div>
-              <ol className="mt-6 space-y-1">
-                {["Invoice posted", "Broadcast observed", "Confirmation", "Workspace unlocked"].map(
-                  (label, index) => {
-                    const done = index <= phase;
-                    return (
-                      <li key={label} className="flex min-h-11 items-center gap-3 text-sm">
-                        <span className={cn("size-2.5 rounded-full", done ? "bg-volt" : "bg-line")} />
-                        <span className={done ? "text-fg" : "text-faint"}>{label}</span>
-                      </li>
-                    );
-                  },
-                )}
-              </ol>
-              <div className="mt-4 flex flex-wrap gap-2">
+
+              {/* Progress Milestones */}
+              <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-3">Chain Verification</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                  {["Invoice Generated", "Tx Broadcasted", "Confirmations (1/1)", "Workspace Live"].map(
+                    (label, index) => {
+                      const done = index <= phase;
+                      return (
+                        <div
+                          key={label}
+                          className={cn(
+                            "p-2.5 rounded-xl border text-center transition-all",
+                            done
+                              ? "bg-ios-green/10 border-ios-green/30 text-white"
+                              : "bg-white/[0.01] border-white/5 text-muted",
+                          )}
+                        >
+                          <span
+                            className={cn(
+                              "size-2 rounded-full inline-block mx-auto mb-1.5",
+                              done ? "bg-ios-green" : "bg-muted/40",
+                            )}
+                          />
+                          <p className="font-medium text-[11px] leading-tight">{label}</p>
+                        </div>
+                      );
+                    },
+                  )}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Button size="lg" disabled={watching} onClick={() => setWatching(true)}>
-                  {watching ? "Watching sandbox" : "Settle in sandbox"}
+                  {watching ? "Broadcasting Confirmation..." : "Confirm & Unlock Workspace"}
                 </Button>
+
                 <Button
                   variant="line"
                   size="lg"
@@ -243,43 +321,51 @@ function CheckoutPage() {
                     setPhase(0);
                   }}
                 >
-                  Edit order
+                  Modify Tier
                 </Button>
               </div>
-            </>
+            </div>
           )}
         </div>
 
-        <aside className="rounded-lg border border-line p-5">
-          <p className="text-xs uppercase tracking-widest text-faint">Order</p>
-          <p className="mt-3 font-display text-3xl">{plan.name}</p>
-          <dl className="mt-4 space-y-2 text-sm">
-            <div className="flex justify-between gap-3">
-              <dt className="text-muted">Term</dt>
-              <dd>{term === "year" ? "Year" : "30 days"}</dd>
+        {/* Order Summary Sidebar */}
+        <aside className="ios-glass rounded-3xl p-6 sm:p-7 border border-white/10 lg:col-span-4 shadow-xl">
+          <p className="text-xs uppercase tracking-wider text-muted font-semibold">Workspace Summary</p>
+          <p className="mt-2 text-2xl font-semibold text-white tracking-tight">{plan.name} Package</p>
+
+          <dl className="mt-6 space-y-3 text-xs">
+            <div className="flex justify-between items-center py-2 border-b border-line">
+              <dt className="text-muted">Subscription Term</dt>
+              <dd className="font-semibold text-white">{term === "year" ? "Annual (Save 15%)" : "30-Day Monthly"}</dd>
             </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-muted">Credit</dt>
-              <dd className="tabular-nums">{usd} USDT</dd>
+            <div className="flex justify-between items-center py-2 border-b border-line">
+              <dt className="text-muted">Included Agent Seats</dt>
+              <dd className="font-semibold text-white font-mono">{plan.seats} Seats</dd>
             </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-muted">Due</dt>
-              <dd className="tabular-nums">
+            <div className="flex justify-between items-center py-2 border-b border-line">
+              <dt className="text-muted">Outbound Minute Pool</dt>
+              <dd className="font-semibold text-white font-mono">{plan.minutes.toLocaleString()} Min</dd>
+            </div>
+            <div className="flex justify-between items-center py-2 border-b border-line">
+              <dt className="text-muted">Included Carrier DIDs</dt>
+              <dd className="font-semibold text-white font-mono">{plan.dids} Numbers</dd>
+            </div>
+            <div className="flex justify-between items-center py-2 border-b border-line">
+              <dt className="text-muted">Private Tunnel Hubs</dt>
+              <dd className="font-semibold text-white">12 Global Gateways</dd>
+            </div>
+            <div className="flex justify-between items-center py-3">
+              <dt className="text-sm font-semibold text-white">Total Crypto Due</dt>
+              <dd className="text-base font-semibold text-volt font-mono tabular-nums">
                 {amount} {asset.label}
               </dd>
             </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-muted">Seats</dt>
-              <dd>{plan.seats}</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-muted">Identity</dt>
-              <dd>None</dd>
-            </div>
           </dl>
-          <p className="mt-5 text-xs text-faint">
-            Lawful use only. Fraud, spam, phishing, and breaking into machines are refused even without KYC.
-          </p>
+
+          <div className="mt-6 p-4 rounded-2xl bg-white/[0.03] border border-white/5 text-[11px] text-muted leading-relaxed">
+            <span className="font-semibold text-white block mb-1">Zero Identity Obligation</span>
+            Vela workspaces do not require KYC. The generated callsign is the cryptographic key to your entire communication instance.
+          </div>
         </aside>
       </div>
     </Wrap>
@@ -300,8 +386,8 @@ function InvoiceQr({ value }: { value: string }) {
         if (!qr?.toDataURL) return null;
         return qr.toDataURL(value, {
           margin: 1,
-          width: 320,
-          color: { dark: "#12130e", light: "#f3f1e7" },
+          width: 280,
+          color: { dark: "#000000", light: "#ffffff" },
         });
       })
       .then((url) => {
@@ -316,11 +402,11 @@ function InvoiceQr({ value }: { value: string }) {
   }, [value]);
 
   return (
-    <div className="flex h-56 w-56 shrink-0 items-center justify-center overflow-hidden rounded-md bg-fg">
+    <div className="flex size-44 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-2 shadow-lg">
       {src ? (
-        <img src={src} alt="Sandbox invoice code" className="h-56 w-56" />
+        <img src={src} alt="Sandbox invoice QR code" className="size-full object-contain" />
       ) : (
-        <span className="px-4 text-center text-sm text-ink">Preparing code</span>
+        <span className="px-4 text-center text-xs text-black font-medium">Generating QR...</span>
       )}
     </div>
   );

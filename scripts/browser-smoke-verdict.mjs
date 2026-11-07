@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { existsSync } from "node:fs";
 export function normalizeBodyText(text) {
   return String(text ?? "")
     .replace(/\s+/g, " ")
@@ -33,9 +34,12 @@ export function parseSmokeArgs(argv, env = {}) {
       positional.push(arg);
     }
   }
+  const defaultPng = existsSync("/workspace/screenshots")
+    ? "/workspace/screenshots/app-builder-preview.png"
+    : `${process.cwd()}/screenshots/app-builder-preview.png`;
   return {
-    url: positional[0] || "http://127.0.0.1:8080/",
-    outPng: positional[1] || "/workspace/screenshots/app-builder-preview.png",
+    url: positional[0] || process.env.DEV_URL || "http://127.0.0.1:3000/",
+    outPng: positional[1] || defaultPng,
     baseline,
   };
 }

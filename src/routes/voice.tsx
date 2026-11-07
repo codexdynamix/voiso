@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Search, Globe, Plus, Check } from "lucide-react";
 import { VoicePanel } from "@/components/voice-panel";
 import { Wrap } from "@/components/shell";
 import { DIDS, planById } from "@/lib/catalog";
@@ -8,10 +10,10 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/voice")({
   head: () => ({
     meta: [
-      { title: "Voice — Vela" },
+      { title: "Voice & Dialer — Vela Communications Cloud" },
       {
         name: "description",
-        content: "Browser softphone, DIDs, SMS, and a dialer. No per-agent contract and no KYC.",
+        content: "Browser WebRTC softphone, global DID virtual numbers, SMS, and predictive dialer without KYC.",
       },
     ],
   }),
@@ -25,52 +27,121 @@ function VoicePage() {
   const attachDid = useVela((state) => state.attachDid);
   const plan = planById(active ? (planId ?? "lattice") : "lattice");
 
+  const [query, setQuery] = useState("");
+
+  const filteredDids = DIDS.filter(
+    (d) =>
+      d.city.toLowerCase().includes(query.toLowerCase()) ||
+      d.country.toLowerCase().includes(query.toLowerCase()) ||
+      d.id.includes(query),
+  );
+
   return (
-    <>
-      <header className="border-b border-line">
-        <Wrap className="py-14 md:py-20">
-          <p className="text-xs uppercase tracking-widest text-volt">Voice</p>
-          <h1 className="mt-3 max-w-3xl text-4xl leading-tight sm:text-5xl">
-            A softphone that does not bill you per pair of ears.
-          </h1>
-          <p className="mt-5 max-w-2xl text-lg text-muted">
-            Outbound, inbound, SMS, and — on Lattice — a list dialer. You present a number you hold. The
-            workspace price already includes the seats.
-          </p>
+    <div>
+      {/* Header */}
+      <header className="border-b border-line py-12 md:py-16">
+        <Wrap>
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1 text-xs text-muted backdrop-blur-md mb-3">
+              <span className="size-1.5 rounded-full bg-ios-green animate-pulse" />
+              <span className="font-semibold text-white">Direct WebRTC Telephony</span>
+            </div>
+
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl text-white">
+              Carrier voice without per-agent licensing.
+            </h1>
+
+            <p className="mt-4 text-base sm:text-lg text-muted leading-relaxed">
+              Outbound, inbound, SMS, predictive automated dialer, and IVR queues. Present an international DID you hold. Unlimited seats are already covered in your flat workspace plan.
+            </p>
+          </div>
         </Wrap>
       </header>
+
+      {/* Main Voice Panel & Phone Hardware */}
       <Wrap className="py-10 md:py-14">
         <VoicePanel />
-        <div className="mt-10">
-          <h2 className="font-display text-3xl font-medium">Number inventory</h2>
-          <p className="mt-2 max-w-2xl text-sm text-muted">
-            {plan.name} includes {plan.dids}. Extra DIDs attach in this sandbox without a charge. A live invoice
-            would add the monthly amount in the same asset.
-          </p>
-          <ul className="mt-5 divide-y divide-line border-y border-line">
-            {DIDS.map((did, index) => {
+
+        {/* Global DID Inventory Section */}
+        <div className="mt-16 pt-12 border-t border-line">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-volt">Carrier Number Fleet</p>
+              <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-white">International DIDs Inventory</h2>
+              <p className="mt-1 text-xs sm:text-sm text-muted">
+                Your <span className="text-white font-medium">{plan.name}</span> plan includes {plan.dids} free numbers. Attach extra numbers instantly in sandbox.
+              </p>
+            </div>
+
+            {/* Quick Search */}
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Filter by city, country..."
+                className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pl-10 pr-3.5 text-xs text-white placeholder:text-muted/60 focus:outline-none focus:ring-1 focus:ring-volt"
+              />
+            </div>
+          </div>
+
+          <div className="mt-6 ios-glass rounded-3xl overflow-hidden border border-white/10 divide-y divide-line">
+            {filteredDids.map((did, index) => {
               const included = index < plan.dids;
               const held = owned.includes(did.id) || included;
               return (
-                <li key={did.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
-                  <div>
-                    <p className="tabular-nums text-sm">{did.id}</p>
-                    <p className="text-xs text-faint">
-                      {did.city} · {did.country}
-                    </p>
-                  </div>
+                <div
+                  key={did.id}
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 sm:px-6 hover:bg-white/[0.02] transition-colors"
+                >
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-muted">{included ? "Included" : `${did.monthly} USDT`}</span>
-                    <Button variant="line" disabled={held} onClick={() => attachDid(did.id)}>
-                      {held ? "On the line" : "Attach"}
+                    <div className="size-10 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center text-volt shrink-0">
+                      <Globe className="size-5" />
+                    </div>
+
+                    <div>
+                      <p className="font-mono text-sm font-semibold text-white">{did.id}</p>
+                      <p className="text-xs text-muted">
+                        {did.city}, {did.country} · Voice & SMS Enabled
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between sm:justify-end gap-4">
+                    <span className="text-xs font-medium text-muted">
+                      {included ? (
+                        <span className="text-ios-green font-semibold">Included in {plan.name}</span>
+                      ) : (
+                        `${did.monthly} USDT / mo`
+                      )}
+                    </span>
+
+                    <Button
+                      variant={held ? "line" : "primary"}
+                      size="sm"
+                      disabled={held}
+                      onClick={() => attachDid(did.id)}
+                      className={cn(held && "border-ios-green/40 text-ios-green bg-ios-green/10")}
+                    >
+                      {held ? (
+                        <>
+                          <Check className="size-3.5" />
+                          <span>Active on Line</span>
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="size-3.5" />
+                          <span>Attach DID</span>
+                        </>
+                      )}
                     </Button>
                   </div>
-                </li>
+                </div>
               );
             })}
-          </ul>
+          </div>
         </div>
       </Wrap>
-    </>
+    </div>
   );
 }

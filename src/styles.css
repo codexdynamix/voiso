@@ -1,23 +1,29 @@
 @import "tailwindcss";
 @import "@fontsource-variable/geist/wght.css";
-@import "@fontsource-variable/fraunces/wght.css";
-@import "@fontsource-variable/fraunces/wght-italic.css";
 
 @theme {
-  --color-bg: #0c0d0a;
-  --color-raised: #14150f;
-  --color-surface: #1c1e16;
-  --color-fg: #f3f1e7;
-  --color-muted: #9c988c;
-  --color-faint: #6e6b61;
-  --color-line: #2c2e24;
-  --color-volt: #dff25a;
-  --color-ink: #12130e;
-  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
-  --radius-sm: 0.5rem;
-  --radius-md: 0.875rem;
-  --radius-lg: 1.25rem;
+  --color-bg: #050608;
+  --color-raised: #0d1017;
+  --color-surface: #141824;
+  --color-card: rgba(255, 255, 255, 0.035);
+  --color-card-hover: rgba(255, 255, 255, 0.06);
+  --color-fg: #f5f5f7;
+  --color-muted: #86868b;
+  --color-faint: #48484a;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-bright: rgba(255, 255, 255, 0.16);
+  --color-volt: #2997ff;
+  --color-volt-hover: #0071e3;
+  --color-ios-green: #30d158;
+  --color-ios-purple: #af52de;
+  --color-ios-orange: #ff9f0a;
+  --color-ink: #000000;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: 0.625rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
 }
 
 @layer base {
@@ -26,6 +32,7 @@
     background: var(--color-bg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -34,11 +41,13 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-sans);
+    letter-spacing: -0.011em;
+    selection-background-color: rgba(41, 151, 255, 0.25);
   }
 
-  h1,
-  h2,
-  h3 {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.024em;
     text-wrap: balance;
   }
 
@@ -49,11 +58,12 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+    touch-action: manipulation;
   }
 
   ::selection {
-    background: var(--color-volt);
-    color: var(--color-ink);
+    background: rgba(41, 151, 255, 0.35);
+    color: #ffffff;
   }
 
   input,
@@ -63,24 +73,49 @@
   }
 }
 
-h1 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+/* Apple iOS Glass & Depth Utilities */
+.ios-glass {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+.ios-glass-header {
+  background: rgba(5, 6, 8, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ios-pill-active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.ios-glow-blue {
+  background: radial-gradient(circle at 50% 0%, rgba(41, 151, 255, 0.15) 0%, transparent 70%);
+}
+
+.ios-glow-radial {
+  background: radial-gradient(800px circle at 50% -20%, rgba(41, 151, 255, 0.12), transparent 50%),
+              radial-gradient(600px circle at 80% 20%, rgba(175, 82, 222, 0.08), transparent 40%);
 }
 
 .desk-wallpaper {
-  background-color: var(--color-bg);
+  background-color: #07090e;
   background-image:
-    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
-  background-size: 28px 28px;
+    radial-gradient(circle at 50% 50%, rgba(41, 151, 255, 0.04) 0%, transparent 60%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 28px 28px, 28px 28px;
 }
 
 @keyframes vela-level {
-  0%,
-  100% {
-    transform: scaleY(0.4);
+  0%, 100% {
+    transform: scaleY(0.3);
   }
   50% {
     transform: scaleY(1);
@@ -89,25 +124,30 @@ h1 {
 
 .vela-wave span {
   transform-origin: center;
-  animation: vela-level 900ms ease-in-out infinite;
+  animation: vela-level 800ms ease-in-out infinite;
 }
 
 .vela-wave span:nth-child(odd) {
-  animation-delay: 140ms;
+  animation-delay: 120ms;
 }
 
 .vela-wave span:nth-child(3n) {
-  animation-delay: 260ms;
+  animation-delay: 240ms;
 }
 
-@keyframes vela-blink {
+@keyframes pulse-gentle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
   50% {
-    opacity: 0.35;
+    opacity: 0.6;
+    transform: scale(0.96);
   }
 }
 
-.vela-live {
-  animation: vela-blink 1.8s ease-in-out infinite;
+.ios-live-indicator {
+  animation: pulse-gentle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
