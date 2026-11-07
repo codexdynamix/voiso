@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body {
+      margin: 0;
+      width: 1200px;
+      height: 630px;
+      background: #0c0d0a;
+      color: #f3f1e7;
+      font-family: "Liberation Sans Narrow", "Liberation Sans", sans-serif;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .frame {
+      position: absolute;
+      inset: 40px;
+      border: 1px solid rgba(243, 241, 231, 0.2);
+    }
+    .lockup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .mark {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 26px;
+    }
+    .word {
+      margin: 0;
+      font-weight: 700;
+      font-size: 148px;
+      line-height: 0.86;
+      letter-spacing: 0.32em;
+      padding-left: 0.32em;
+    }
+    .line {
+      margin: 30px 0 0;
+      font-weight: 400;
+      font-size: 23px;
+      line-height: 1;
+      letter-spacing: 0.26em;
+      padding-left: 0.26em;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame"></div>
+  <div class="lockup">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+      <polygon points="4,8 11,8 20,16 11,24 4,24 13,16" fill="#dff25a"/>
+      <polygon points="13,10 18,10 25,16 18,22 13,22 20,16" fill="#f3f1e7"/>
+    </svg>
+    <h1 class="word">VELA</h1>
+    <p class="line">Voice. Tunnel. Desk. No KYC.</p>
+  </div>
+</body>
+</html>

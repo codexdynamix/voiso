@@ -1,0 +1,121 @@
+@import "tailwindcss";
+@import "@fontsource-variable/geist/wght.css";
+@import "@fontsource-variable/fraunces/wght.css";
+@import "@fontsource-variable/fraunces/wght-italic.css";
+
+@theme {
+  --color-bg: #0c0d0a;
+  --color-raised: #14150f;
+  --color-surface: #1c1e16;
+  --color-fg: #f3f1e7;
+  --color-muted: #9c988c;
+  --color-faint: #6e6b61;
+  --color-line: #2c2e24;
+  --color-volt: #dff25a;
+  --color-ink: #12130e;
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: var(--color-volt);
+    color: var(--color-ink);
+  }
+
+  input,
+  textarea,
+  select {
+    caret-color: var(--color-volt);
+  }
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.desk-wallpaper {
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@keyframes vela-level {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.vela-wave span {
+  transform-origin: center;
+  animation: vela-level 900ms ease-in-out infinite;
+}
+
+.vela-wave span:nth-child(odd) {
+  animation-delay: 140ms;
+}
+
+.vela-wave span:nth-child(3n) {
+  animation-delay: 260ms;
+}
+
+@keyframes vela-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.vela-live {
+  animation: vela-blink 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

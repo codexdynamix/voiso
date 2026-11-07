@@ -1,0 +1,1 @@
+function e(e){let t=Math.max(0,e),n=Math.floor(t/60),r=t%60;return`${String(n).padStart(2,`0`)}:${String(r).padStart(2,`0`)}`}function t(e){return e.toLocaleTimeString([],{hour:`2-digit`,minute:`2-digit`})}export{e as n,t};
