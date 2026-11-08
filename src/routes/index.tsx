@@ -20,16 +20,14 @@ import { buttonVariants } from "@/components/ui/button";
 import { DIDS, FAQ, PLANS, REGIONS } from "@/lib/catalog";
 import { cn } from "@/lib/cn";
 import { playKeyTone, playRingbackTone } from "@/lib/dtmf";
+import HERO_IMAGE from "@/assets/images/call-center-agent.jpg";
+import CUSTOMER_CALL_IMAGE from "@/assets/images/customer-phone-call.jpg";
+import PHONE_SUPPORT_IMAGE from "@/assets/images/phone-support-call.jpg";
 
 export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const HERO_IMAGE = "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1600&q=85";
-const TEAM_IMAGE = "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1400&q=85";
-const VOICE_IMAGE = "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1000&q=82";
-const TUNNEL_IMAGE = "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=82";
-const DESK_IMAGE = "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=82";
 const AI_RESEARCH_PROMPT = encodeURIComponent(
   "Evaluate VELA Communications Cloud from this product brief: browser voice and global phone numbers, encrypted WireGuard connectivity, and disposable remote workstations in one workspace. Summarize who it may fit and list claims a buyer should independently verify.",
 );
@@ -177,7 +175,7 @@ function Home() {
             <div className="hero-photo-frame relative aspect-[5/4] overflow-hidden rounded-3xl bg-raised shadow-xl shadow-slate-900/15">
               <img
                 src={HERO_IMAGE}
-                alt="Customer operations team working together at a laptop"
+                alt="Call-center support agent wearing a headset and answering a customer"
                 className="hero-photo absolute inset-0 size-full object-cover"
                 fetchPriority="high"
                 referrerPolicy="no-referrer"
@@ -219,8 +217,8 @@ function Home() {
         <Wrap className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="relative min-h-72 overflow-hidden rounded-3xl bg-raised shadow-lg shadow-slate-900/10 lg:col-span-7">
             <img
-              src={TEAM_IMAGE}
-              alt="Customer operations team collaborating around a laptop"
+              src={CUSTOMER_CALL_IMAGE}
+              alt="Customer support professional speaking on a phone while using a laptop"
               className="absolute inset-0 size-full object-cover"
               loading="lazy"
               referrerPolicy="no-referrer"
@@ -318,8 +316,8 @@ function Home() {
               <div>
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-black/40 border border-white/5">
                   <img
-                    src={VOICE_IMAGE}
-                    alt="Customer support colleagues reviewing a conversation together"
+                    src={HERO_IMAGE}
+                    alt="Call-center support agent wearing a headset at her workstation"
                     className="size-full object-cover transition-transform duration-500 hover:scale-105"
                     loading="lazy"
                     referrerPolicy="no-referrer"
@@ -364,8 +362,8 @@ function Home() {
               <div>
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-black/40 border border-white/5">
                   <img
-                    src={TUNNEL_IMAGE}
-                    alt="Rows of secure network servers in a data center"
+                    src={PHONE_SUPPORT_IMAGE}
+                    alt="Customer service professional speaking on a phone at her desk"
                     className="size-full object-cover transition-transform duration-500 hover:scale-105"
                     loading="lazy"
                     referrerPolicy="no-referrer"
@@ -410,8 +408,8 @@ function Home() {
               <div>
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-black/40 border border-white/5">
                   <img
-                    src={DESK_IMAGE}
-                    alt="Bright, modern shared workspace"
+                    src={CUSTOMER_CALL_IMAGE}
+                    alt="Customer support professional handling a phone call with a laptop open"
                     className="size-full object-cover transition-transform duration-500 hover:scale-105"
                     loading="lazy"
                     referrerPolicy="no-referrer"
