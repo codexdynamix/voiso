@@ -66,7 +66,7 @@ export function SeatMath() {
           value={`$${voisoCost.toLocaleString()}`}
           sublabel="Billed per seat"
           hint="$65/agent/mo + PBX add-ons"
-          muted
+          _muted
         />
         <Figure
           label={`Vela ${quote.plan.name} Tier`}

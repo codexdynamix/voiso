@@ -12,6 +12,7 @@ import {
   Globe,
   Radio,
   Lock,
+  ExternalLink,
 } from "lucide-react";
 import { Wrap } from "@/components/shell";
 import { SeatMath } from "@/components/seat-math";
@@ -24,9 +25,20 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const HERO_IMAGE = "/src/assets/images/hero_telecom_network_1794093485203.jpg";
-const VOICE_IMAGE = "/src/assets/images/voice_webrtc_soundwave_1794093485367.jpg";
-const TUNNEL_IMAGE = "/src/assets/images/tunnel_wireguard_shield_1794093484528.jpg";
+const HERO_IMAGE = "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1600&q=85";
+const TEAM_IMAGE = "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1400&q=85";
+const VOICE_IMAGE = "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1000&q=82";
+const TUNNEL_IMAGE = "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=82";
+const DESK_IMAGE = "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=82";
+const AI_RESEARCH_PROMPT = encodeURIComponent(
+  "Evaluate VELA Communications Cloud from this product brief: browser voice and global phone numbers, encrypted WireGuard connectivity, and disposable remote workstations in one workspace. Summarize who it may fit and list claims a buyer should independently verify.",
+);
+const AI_ASSISTANTS = [
+  { name: "ChatGPT", href: `https://chatgpt.com/?q=${AI_RESEARCH_PROMPT}` },
+  { name: "Claude", href: `https://claude.ai/new?q=${AI_RESEARCH_PROMPT}` },
+  { name: "Gemini", href: "https://gemini.google.com/app" },
+  { name: "Perplexity", href: `https://www.perplexity.ai/search?q=${AI_RESEARCH_PROMPT}` },
+];
 
 const COMPARISON_ROWS = [
   {
@@ -67,75 +79,185 @@ const COMPARISON_ROWS = [
   },
 ];
 
+const SOLUTIONS = [
+  {
+    icon: PhoneCall,
+    title: "Customer conversations",
+    detail: "Give sales and support teams a browser-based dialer with global numbers.",
+    to: "/voice",
+    action: "Explore voice",
+  },
+  {
+    icon: Shield,
+    title: "Private connections",
+    detail: "Route distributed teams through encrypted WireGuard network access.",
+    to: "/tunnel",
+    action: "Explore tunnels",
+  },
+  {
+    icon: Monitor,
+    title: "Flexible workstations",
+    detail: "Pair remote desktops with a private network for focused operations.",
+    to: "/desk",
+    action: "Explore workstations",
+  },
+];
+
 function Home() {
   const [activeTab, setActiveTab] = useState<"phone" | "edge" | "specs">("phone");
   const [selectedDid, setSelectedDid] = useState(DIDS[0].id);
 
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+    const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -4% 0px" });
+
+    targets.forEach((target) => {
+      target.classList.add("reveal-ready");
+      observer.observe(target);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-8 pb-16 md:pt-14 md:pb-24">
+      <section className="relative overflow-hidden pt-6 pb-12 md:pt-12 md:pb-16">
         <Wrap className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
-          {/* Left Column: Headlines & Value Prop */}
-          <div className="min-w-0 lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1 text-xs text-muted backdrop-blur-md">
+          <div className="hero-copy min-w-0 lg:col-span-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-3.5 py-1.5 text-xs text-muted shadow-sm">
               <span className="size-2 rounded-full bg-ios-green animate-pulse" />
-              <span className="font-medium text-white">Next-Gen Telecom Cloud</span>
-              <span aria-hidden="true" className="text-white/20">·</span>
-              <span>Better than Voiso & Zadarma</span>
+              <span className="font-semibold text-fg">Communications workspace</span>
+              <span aria-hidden="true" className="text-faint">·</span>
+              <span>Voice, privacy, and remote work</span>
             </div>
 
-            <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl text-white leading-[1.08]">
-              Cloud voice, private tunnels, and virtual desks.{" "}
-              <span className="bg-gradient-to-r from-volt via-white to-white bg-clip-text text-transparent">
-                Without KYC.
-              </span>
+            <h1 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1.04] tracking-tight text-fg sm:text-5xl lg:text-6xl">
+              A clearer line for every <span className="text-volt">conversation.</span>
             </h1>
 
             <p className="mt-5 max-w-xl text-base sm:text-lg text-muted leading-relaxed">
-              Replace bloated contact centers and per-seat taxes. Direct WebRTC browser softphone, low-latency SIP trunking, WireGuard encrypted tunnels, and disposable remote desktops on a single crypto invoice.
+              Global browser calling, private network access, and flexible remote workstations in one connected workspace.
             </p>
 
-            {/* CTAs */}
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link to="/pricing" className={buttonVariants({ size: "lg" })}>
-                <span>Get a Line</span>
+                <span>Explore plans</span>
                 <ArrowRight className="size-4" />
               </Link>
               <Link to="/console" className={buttonVariants({ variant: "line", size: "lg" })}>
-                <span>Open Live Console</span>
+                <span>Open the console</span>
               </Link>
             </div>
 
-            {/* Micro Trust Checklist */}
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted/80">
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-medium text-muted">
               <span className="inline-flex items-center gap-1.5">
                 <Shield className="size-3.5 text-volt" />
-                Zero legal documents
+                Private callsign access
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Radio className="size-3.5 text-ios-green" />
-                Sub-20ms global edge
+                Global voice coverage
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Lock className="size-3.5 text-volt" />
-                Wiped cleanly on cancel
+                Encrypted connectivity
               </span>
             </div>
           </div>
 
-          {/* Right Column: Interactive Apple-style Island Simulator */}
-          <div className="lg:col-span-5">
-            <InteractiveTelecomIsland
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
+          <div className="hero-visual lg:col-span-6">
+            <div className="hero-photo-frame relative aspect-[5/4] overflow-hidden rounded-3xl bg-raised shadow-xl shadow-slate-900/15">
+              <img
+                src={HERO_IMAGE}
+                alt="Customer operations team working together at a laptop"
+                className="hero-photo absolute inset-0 size-full object-cover"
+                fetchPriority="high"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/55 via-transparent to-slate-950/5" />
+              <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3 py-2 text-xs font-medium text-white backdrop-blur-md sm:right-6 sm:top-6">
+                <span className="size-2 rounded-full bg-ios-green animate-pulse" />
+                Ready across 100+ regions
+              </div>
+              <div className="hero-live-card absolute bottom-4 left-4 right-4 rounded-2xl border border-white/70 bg-white/95 p-4 shadow-xl sm:bottom-6 sm:left-6 sm:right-auto sm:w-80">
+                <div className="flex items-center gap-3">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-volt/10 text-volt">
+                    <PhoneCall className="size-5" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-fg">Workspace preview</p>
+                    <p className="mt-0.5 text-xs text-muted">Voice support · New York</p>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-ios-green">
+                    <span className="size-1.5 rounded-full bg-ios-green" />
+                    Ready
+                  </span>
+                </div>
+                <div className="mt-4 flex items-center justify-between border-t border-line pt-3">
+                  <div className="hero-wave flex h-6 items-center gap-1" aria-hidden="true">
+                    {[10, 18, 12, 22, 14, 20, 9, 17, 12, 21, 11].map((height, index) => (
+                      <span key={index} style={{ height: `${height}px` }} />
+                    ))}
+                  </div>
+                  <span className="text-xs font-medium text-muted">Voice, messaging, and routing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Wrap>
+      </section>
+
+      <section data-reveal className="home-story border-y border-line bg-white py-8 md:py-12">
+        <Wrap className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
+          <div className="relative min-h-72 overflow-hidden rounded-3xl bg-raised shadow-lg shadow-slate-900/10 lg:col-span-7">
+            <img
+              src={TEAM_IMAGE}
+              alt="Customer operations team collaborating around a laptop"
+              className="absolute inset-0 size-full object-cover"
+              loading="lazy"
+              referrerPolicy="no-referrer"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/45 via-transparent to-transparent" />
+            <div className="absolute bottom-4 left-4 rounded-2xl border border-white/70 bg-white/95 p-4 shadow-xl sm:bottom-6 sm:left-6">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted">One connected workspace</p>
+              <p className="mt-1 text-lg font-semibold text-fg">Every conversation, in context.</p>
+              <div className="mt-3 flex items-center gap-2 text-xs text-muted">
+                <span className="size-2 rounded-full bg-ios-green" />
+                Voice, messaging, and teams
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5">
+            <p className="text-xs font-semibold uppercase tracking-wider text-volt">Made for customer teams</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+              A clearer view of every customer conversation.
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted">
+              Bring voice, messaging, and routing together, then give your team the context to respond with confidence.
+            </p>
+            <ul className="mt-6 grid gap-3 text-sm text-fg sm:grid-cols-2">
+              <li className="flex items-center gap-2"><PhoneCall className="size-4 text-volt" /> One shared conversation timeline</li>
+              <li className="flex items-center gap-2"><Globe className="size-4 text-volt" /> Teams across every time zone</li>
+            </ul>
+            <Link to="/voice" className="mt-7 inline-flex min-h-11 items-center gap-2 rounded-full bg-volt px-5 text-sm font-semibold text-ink shadow-md shadow-volt/20 transition hover:bg-volt-hover">
+              Explore the voice workspace
+              <ArrowRight className="size-4" />
+            </Link>
           </div>
         </Wrap>
       </section>
 
       {/* 4-Metric Glass Shelf */}
-      <section className="border-y border-line bg-white/[0.015]">
+      <section data-reveal className="border-y border-line bg-white/[0.015]">
         <Wrap className="grid grid-cols-2 lg:grid-cols-4 divide-y divide-line lg:divide-y-0 lg:divide-x">
           {[
             { metric: "100+", label: "Countries & DIDs", detail: "Instant number provisioning" },
@@ -154,8 +276,31 @@ function Home() {
         </Wrap>
       </section>
 
+      <section data-reveal className="border-b border-line bg-white py-16 md:py-20">
+        <Wrap className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-volt">Live workspace preview</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+              See the voice tools in motion.
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted">
+              Switch between the softphone, edge regions, and codec details. The preview is interactive; calls are simulated locally.
+            </p>
+            <Link to="/voice" className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-volt px-5 text-sm font-semibold text-ink shadow-md shadow-volt/20 transition hover:bg-volt-hover">
+              Explore voice
+              <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="lg:col-span-8">
+            <div className="mx-auto w-full max-w-xl">
+              <InteractiveTelecomIsland activeTab={activeTab} setActiveTab={setActiveTab} />
+            </div>
+          </div>
+        </Wrap>
+      </section>
+
       {/* Interactive Products Showcase */}
-      <section className="py-20 md:py-28">
+      <section id="products" data-reveal className="scroll-mt-24 py-20 md:py-28">
         <Wrap>
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-wider text-volt">The Three Pillars</p>
@@ -169,13 +314,14 @@ function Home() {
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {/* Voice Pillar */}
-            <div className="ios-glass flex flex-col justify-between rounded-3xl p-6 sm:p-7 transition-all duration-300 hover:border-white/20">
+            <div data-reveal className="ios-glass flex flex-col justify-between rounded-3xl p-6 sm:p-7 transition-all duration-300 hover:border-white/20">
               <div>
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-black/40 border border-white/5">
                   <img
                     src={VOICE_IMAGE}
-                    alt="WebRTC voice acoustic beam"
+                    alt="Customer support colleagues reviewing a conversation together"
                     className="size-full object-cover transition-transform duration-500 hover:scale-105"
+                    loading="lazy"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute top-3 left-3 rounded-full bg-black/60 px-3 py-1 text-xs text-white backdrop-blur-md border border-white/10 flex items-center gap-1.5">
@@ -214,13 +360,14 @@ function Home() {
             </div>
 
             {/* Tunnel Pillar */}
-            <div className="ios-glass flex flex-col justify-between rounded-3xl p-6 sm:p-7 transition-all duration-300 hover:border-white/20">
+            <div data-reveal className="ios-glass flex flex-col justify-between rounded-3xl p-6 sm:p-7 transition-all duration-300 hover:border-white/20">
               <div>
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-black/40 border border-white/5">
                   <img
                     src={TUNNEL_IMAGE}
-                    alt="WireGuard encrypted security node"
+                    alt="Rows of secure network servers in a data center"
                     className="size-full object-cover transition-transform duration-500 hover:scale-105"
+                    loading="lazy"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute top-3 left-3 rounded-full bg-black/60 px-3 py-1 text-xs text-white backdrop-blur-md border border-white/10 flex items-center gap-1.5">
@@ -259,13 +406,14 @@ function Home() {
             </div>
 
             {/* Desk Pillar */}
-            <div className="ios-glass flex flex-col justify-between rounded-3xl p-6 sm:p-7 transition-all duration-300 hover:border-white/20">
+            <div data-reveal className="ios-glass flex flex-col justify-between rounded-3xl p-6 sm:p-7 transition-all duration-300 hover:border-white/20">
               <div>
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-black/40 border border-white/5">
                   <img
-                    src={HERO_IMAGE}
-                    alt="Cloud remote workstation node"
+                    src={DESK_IMAGE}
+                    alt="Bright, modern shared workspace"
                     className="size-full object-cover transition-transform duration-500 hover:scale-105"
+                    loading="lazy"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute top-3 left-3 rounded-full bg-black/60 px-3 py-1 text-xs text-white backdrop-blur-md border border-white/10 flex items-center gap-1.5">
@@ -306,8 +454,49 @@ function Home() {
         </Wrap>
       </section>
 
+      <section id="solutions" data-reveal className="scroll-mt-24 border-y border-line bg-white py-16 md:py-20">
+        <Wrap className="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-volt">Solutions</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+              One workspace, shaped around your team.
+            </h2>
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-muted">
+              Start with the tools you need today. Add global voice, private connectivity, or a remote workstation as your operation grows.
+            </p>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {SOLUTIONS.map((solution, index) => {
+              const Icon = solution.icon;
+              return (
+                <Link
+                  key={solution.title}
+                  to={solution.to}
+                  data-reveal
+                  style={{ transitionDelay: `${index * 90}ms` }}
+                  className="group flex min-h-36 items-start gap-4 rounded-2xl border border-line bg-card-hover p-5 transition duration-200 hover:-translate-y-0.5 hover:border-volt/30 hover:bg-white"
+                >
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-volt shadow-sm">
+                    <Icon className="size-5" />
+                  </span>
+                  <span>
+                    <span className="block font-semibold text-fg">{solution.title}</span>
+                    <span className="mt-1 block text-sm leading-relaxed text-muted">{solution.detail}</span>
+                    <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-volt">
+                      {solution.action}
+                      <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </Wrap>
+      </section>
+
       {/* Head-to-Head Comparison: VELA vs. Voiso & Zadarma */}
-      <section className="border-t border-line py-20 md:py-28 bg-white/[0.01]">
+      <section id="trust" data-reveal className="scroll-mt-24 border-t border-line py-20 md:py-28 bg-white/[0.01]">
         <Wrap>
           <div className="text-center max-w-2xl mx-auto">
             <p className="text-xs font-semibold uppercase tracking-wider text-volt">Uncompromised Architecture</p>
@@ -353,7 +542,7 @@ function Home() {
       </section>
 
       {/* Interactive Global Phone Numbers Selector */}
-      <section className="py-20 md:py-24 border-t border-line">
+      <section data-reveal className="py-20 md:py-24 border-t border-line">
         <Wrap>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
@@ -404,7 +593,7 @@ function Home() {
       </section>
 
       {/* Seat Math & Pricing Section */}
-      <section className="border-t border-line py-20 md:py-24 bg-white/[0.01]">
+      <section data-reveal className="border-t border-line py-20 md:py-24 bg-white/[0.01]">
         <Wrap>
           <SeatMath />
 
@@ -471,7 +660,7 @@ function Home() {
       </section>
 
       {/* FAQ Accordion */}
-      <section className="border-t border-line py-20 md:py-24">
+      <section data-reveal className="border-t border-line py-20 md:py-24">
         <Wrap className="max-w-4xl">
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-wider text-volt">Got Questions?</p>
@@ -496,6 +685,60 @@ function Home() {
               </Accordion.Item>
             ))}
           </Accordion.Root>
+        </Wrap>
+      </section>
+
+      <section data-reveal className="border-t border-line bg-white py-14 md:py-16">
+        <Wrap className="grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-volt">AI assistant shortcuts</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
+              Explore the platform with your preferred assistant.
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              Start a separate conversation with a product brief. These links open external services; they do not connect an account or share private data.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {AI_ASSISTANTS.map((assistant, index) => (
+              <a
+                key={assistant.name}
+                href={assistant.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${assistant.name} with the VELA product brief`}
+                data-reveal
+                style={{ transitionDelay: `${index * 70}ms` }}
+                className="group flex min-h-14 items-center justify-between rounded-xl border border-line bg-card-hover px-4 py-3 transition duration-200 hover:-translate-y-0.5 hover:border-volt/30 hover:bg-white"
+              >
+                <span className="font-semibold text-fg">{assistant.name}</span>
+                <ExternalLink className="size-4 text-muted transition-colors group-hover:text-volt" />
+              </a>
+            ))}
+          </div>
+        </Wrap>
+      </section>
+
+      <section data-reveal className="border-y border-line bg-card-hover py-14 md:py-16">
+        <Wrap className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-wider text-volt">Ready when you are</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+              Bring your team online with one connected workspace.
+            </h2>
+            <p className="mt-3 text-base leading-relaxed text-muted">
+              Compare plans or explore the live console to see how VELA fits your operation.
+            </p>
+          </div>
+          <div className="flex w-full flex-wrap gap-3 md:w-auto md:shrink-0">
+            <Link to="/pricing" className={buttonVariants({ size: "lg" })}>
+              Compare plans
+              <ArrowRight className="size-4" />
+            </Link>
+            <Link to="/console" className={buttonVariants({ variant: "line", size: "lg" })}>
+              Open console
+            </Link>
+          </div>
         </Wrap>
       </section>
     </div>
@@ -647,8 +890,8 @@ function InteractiveTelecomIsland({
               className={cn(
                 "flex-1 h-11 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all active:scale-98",
                 callActive
-                  ? "bg-hangup text-white shadow-lg shadow-red-500/25"
-                  : "bg-call text-black shadow-lg shadow-emerald-500/25",
+                  ? "bg-hangup text-ink shadow-lg shadow-hangup/25"
+                  : "bg-ios-green text-ink shadow-lg shadow-ios-green/25",
               )}
             >
               {callActive ? (

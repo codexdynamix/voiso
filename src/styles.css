@@ -2,22 +2,23 @@
 @import "@fontsource-variable/geist/wght.css";
 
 @theme {
-  --color-bg: #050608;
-  --color-raised: #0d1017;
-  --color-surface: #141824;
-  --color-card: rgba(255, 255, 255, 0.035);
-  --color-card-hover: rgba(255, 255, 255, 0.06);
-  --color-fg: #f5f5f7;
-  --color-muted: #86868b;
-  --color-faint: #48484a;
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-line-bright: rgba(255, 255, 255, 0.16);
-  --color-volt: #2997ff;
-  --color-volt-hover: #0071e3;
-  --color-ios-green: #30d158;
-  --color-ios-purple: #af52de;
-  --color-ios-orange: #ff9f0a;
-  --color-ink: #000000;
+  --color-bg: #f4f8fb;
+  --color-raised: #ffffff;
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
+  --color-card-hover: #edf5f8;
+  --color-fg: #183347;
+  --color-muted: #5e7484;
+  --color-faint: #8294a0;
+  --color-line: rgba(24, 51, 71, 0.12);
+  --color-line-bright: rgba(24, 51, 71, 0.2);
+  --color-volt: #1264d8;
+  --color-volt-hover: #0d4eae;
+  --color-ios-green: #16805f;
+  --color-ios-purple: #715d9c;
+  --color-ios-orange: #b96720;
+  --color-hangup: #bd3f45;
+  --color-ink: #ffffff;
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: 0.625rem;
@@ -28,7 +29,7 @@
 
 @layer base {
   html {
-    color-scheme: dark;
+    color-scheme: light;
     background: var(--color-bg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -42,7 +43,7 @@
     color: var(--color-fg);
     font-family: var(--font-sans);
     letter-spacing: -0.011em;
-    selection-background-color: rgba(41, 151, 255, 0.25);
+    selection-background-color: rgba(23, 109, 168, 0.18);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -62,8 +63,8 @@
   }
 
   ::selection {
-    background: rgba(41, 151, 255, 0.35);
-    color: #ffffff;
+    background: rgba(23, 109, 168, 0.2);
+    color: #183347;
   }
 
   input,
@@ -73,44 +74,165 @@
   }
 }
 
-/* Apple iOS Glass & Depth Utilities */
+/* Soft, paper-bright surfaces used throughout the product pages. */
 .ios-glass {
-  background: rgba(255, 255, 255, 0.035);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 16px 42px -28px rgba(24, 51, 71, 0.28), inset 0 1px 0 #ffffff;
 }
 
 .ios-glass-header {
-  background: rgba(5, 6, 8, 0.72);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border-bottom: 1px solid var(--color-line);
+  box-shadow: 0 8px 28px -24px rgba(24, 51, 71, 0.34);
 }
 
 .ios-pill-active {
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  background: #e4f0f5;
+  color: var(--color-fg);
+  box-shadow: inset 0 0 0 1px rgba(24, 51, 71, 0.08);
 }
 
 .ios-glow-blue {
-  background: radial-gradient(circle at 50% 0%, rgba(41, 151, 255, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 0%, rgba(23, 109, 168, 0.08) 0%, transparent 70%);
 }
 
 .ios-glow-radial {
-  background: radial-gradient(800px circle at 50% -20%, rgba(41, 151, 255, 0.12), transparent 50%),
-              radial-gradient(600px circle at 80% 20%, rgba(175, 82, 222, 0.08), transparent 40%);
+  background: radial-gradient(800px circle at 50% -20%, rgba(23, 109, 168, 0.07), transparent 50%),
+              radial-gradient(600px circle at 85% 12%, rgba(31, 135, 117, 0.05), transparent 42%);
 }
 
 .desk-wallpaper {
-  background-color: #07090e;
+  background-color: #f2f7fa;
   background-image:
-    radial-gradient(circle at 50% 50%, rgba(41, 151, 255, 0.04) 0%, transparent 60%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    radial-gradient(circle at 50% 50%, rgba(23, 109, 168, 0.06) 0%, transparent 60%),
+    linear-gradient(to right, rgba(24, 51, 71, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(24, 51, 71, 0.035) 1px, transparent 1px);
   background-size: 100% 100%, 28px 28px, 28px 28px;
+}
+
+.text-white {
+  color: var(--color-fg);
+}
+
+.hover\:text-white:hover {
+  color: var(--color-volt);
+}
+
+.bg-black\/40 {
+  background-color: #edf3f7;
+}
+
+.bg-black\/60.text-white {
+  color: #ffffff;
+}
+
+[class~="bg-white/[0.03]"],
+[class~="bg-white/[0.04]"],
+[class~="bg-white/[0.06]"] {
+  background-color: #f1f6f8;
+}
+
+[class~="border-white/5"],
+[class~="border-white/10"] {
+  border-color: var(--color-line);
+}
+
+[class~="border-white/15"],
+[class~="border-white/20"] {
+  border-color: var(--color-line-bright);
+}
+
+@keyframes home-story-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home-story {
+  animation: home-story-enter 650ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-photo-drift {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes hero-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.hero-copy {
+  animation: hero-enter 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-visual {
+  animation: hero-enter 850ms cubic-bezier(0.2, 0.7, 0.2, 1) 100ms both;
+}
+
+.hero-photo {
+  animation: hero-photo-drift 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.hero-live-card {
+  animation: hero-float 5.2s ease-in-out infinite;
+}
+
+.hero-wave span {
+  width: 3px;
+  border-radius: 9999px;
+  background: var(--color-volt);
+  transform-origin: center;
+  animation: vela-level 850ms ease-in-out infinite;
+}
+
+.hero-wave span:nth-child(odd) {
+  animation-delay: 110ms;
+}
+
+.hero-wave span:nth-child(3n) {
+  animation-delay: 220ms;
+}
+
+.reveal-ready {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 620ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 620ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal-ready.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @keyframes vela-level {
@@ -151,6 +273,23 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-story {
+    animation: none;
+  }
+
+  .hero-copy,
+  .hero-visual,
+  .hero-photo,
+  .hero-live-card {
+    animation: none;
+  }
+
+  .reveal-ready {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
   *,
   *::before,
   *::after {

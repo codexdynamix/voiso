@@ -6,6 +6,7 @@ import { Wrap } from "@/components/shell";
 import { DIDS, planById } from "@/lib/catalog";
 import { useVela } from "@/lib/store";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/cn";
 
 export const Route = createFileRoute("/voice")({
   head: () => ({
