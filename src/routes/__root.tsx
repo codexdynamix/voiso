@@ -9,11 +9,11 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Vela — Advanced Communications Cloud" },
+      { title: "Vela — Voice, Tunnel, and Desk" },
       {
         name: "description",
         content:
-          "Next-generation enterprise telecommunications cloud. Direct SIP trunking, WebRTC softphone, WireGuard private tunnel, and disposable virtual desktops.",
+          "Vela is a no-KYC communications cloud featuring VoIP numbers, WireGuard tunnels, and disposable virtual desktops settled in crypto.",
       },
       { name: "theme-color", content: "#050608" },
     ],

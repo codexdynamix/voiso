@@ -9,15 +9,17 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "bg-volt text-ink hover:bg-volt-hover shadow-sm shadow-volt/20 border border-volt/10",
+          "bg-volt text-white hover:bg-volt-hover shadow-lg shadow-volt/25 hover:shadow-volt/40 border border-white/20 font-semibold",
+        secondary:
+          "bg-volt-light text-volt hover:bg-[#ebdfff] border border-volt-border font-semibold",
         line:
-          "border border-line-bright bg-white text-fg hover:bg-card-hover hover:border-volt/30 backdrop-blur-md",
+          "border border-line-bright bg-white text-fg hover:bg-card-hover hover:border-volt/30 shadow-xs backdrop-blur-md",
         ghost:
           "bg-transparent text-muted hover:text-volt hover:bg-card-hover",
         call:
-          "bg-ios-green text-ink font-semibold hover:brightness-95 shadow-md shadow-ios-green/25",
+          "bg-ios-green text-white font-semibold hover:brightness-105 shadow-md shadow-ios-green/30",
         hangup:
-          "bg-hangup text-ink font-semibold hover:brightness-95 shadow-md shadow-hangup/25",
+          "bg-hangup text-white font-semibold hover:brightness-105 shadow-md shadow-hangup/30",
       },
       size: {
         sm: "min-h-9 px-3.5 text-xs rounded-full",

@@ -2,7 +2,6 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, X, ArrowUpRight, ChevronDown } from "lucide-react";
 import { Mark } from "@/components/mark";
-import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { useHydrateVela } from "@/lib/store";
 
@@ -65,56 +64,66 @@ function SiteHeader() {
   return (
     <div className="sticky top-0 z-40 w-full pt-2 sm:pt-3 pb-2 transition-all">
       <Wrap>
-        <header className="ios-glass flex h-14 md:h-16 items-center justify-between gap-4 md:gap-8 rounded-2xl md:rounded-full px-4 md:px-6 transition-all">
+        <header className="flex h-14 md:h-16 items-center justify-between gap-4 md:gap-8 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-sm px-4 md:px-6 transition-all">
           {/* Zone 1: Single brand wordmark with emblem */}
-          <Link to="/" className="inline-flex items-center gap-2.5 text-fg whitespace-nowrap shrink-0 group">
+          <Link to="/" className="inline-flex items-center gap-2.5 text-slate-900 whitespace-nowrap shrink-0 group">
             <Mark />
-            <span className="text-base font-semibold tracking-tight text-white group-hover:text-volt transition-colors">
+            <span className="text-lg font-extrabold tracking-tight text-slate-900 group-hover:text-[#1264d8] transition-colors">
               VELA
             </span>
-            <span className="hidden sm:inline-block text-[11px] font-medium tracking-wide text-muted/70 uppercase">
-              Telecom Cloud
+            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50/80 px-2.5 py-0.5 text-[11px] font-semibold text-[#1264d8]">
+              <span className="size-1.5 rounded-full bg-[#1264d8] animate-ping" />
+              Communications Cloud
             </span>
           </Link>
 
-          {/* Product pages stay grouped; the other links land on key home sections. */}
+          {/* Navigation Links matching Voiso standard */}
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
             <details className="group relative">
               <summary
                 className={cn(
-                  "inline-flex h-9 list-none items-center gap-1.5 rounded-full px-3 text-sm font-medium transition-colors hover:text-volt",
-                  ["/voice", "/tunnel", "/desk"].includes(pathname) && "ios-pill-active text-fg",
+                  "inline-flex h-9 list-none items-center gap-1.5 rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60 cursor-pointer",
+                  ["/voice", "/tunnel", "/desk"].includes(pathname) && "bg-blue-50 text-[#1264d8] font-semibold",
                 )}
               >
                 Products
                 <ChevronDown className="size-3.5 transition-transform group-open:rotate-180" />
               </summary>
               <div className="absolute left-0 top-full z-50 w-72 pt-2">
-                <div className="ios-glass rounded-2xl p-2 shadow-xl">
+                <div className="rounded-2xl p-2 shadow-xl border border-slate-200 bg-white">
                   {PRODUCT_LINKS.map((link) => (
                     <Link
                       key={link.to}
                       to={link.to}
-                      className="block rounded-xl px-3 py-2.5 transition-colors hover:bg-card-hover"
+                      className="block rounded-xl px-3 py-2.5 transition-colors hover:bg-slate-50"
                     >
-                      <span className="block text-sm font-semibold text-fg">{link.label}</span>
-                      <span className="mt-0.5 block text-xs text-muted">{link.detail}</span>
+                      <span className="block text-sm font-semibold text-slate-900">{link.label}</span>
+                      <span className="mt-0.5 block text-xs text-slate-500">{link.detail}</span>
                     </Link>
                   ))}
                 </div>
               </div>
             </details>
-            <a href="/#solutions" onClick={(event) => handleSectionClick(event, "solutions")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-muted transition-colors hover:text-volt">
-              Solutions
+            <a href="/#sales" onClick={(event) => handleSectionClick(event, "sales")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
+              Sales
             </a>
-            <a href="/#trust" onClick={(event) => handleSectionClick(event, "trust")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-muted transition-colors hover:text-volt">
-              Security
+            <a href="/#support" onClick={(event) => handleSectionClick(event, "support")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
+              Support
+            </a>
+            <a href="/#flow-builder" onClick={(event) => handleSectionClick(event, "flow-builder")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
+              Flow Builder
+            </a>
+            <a href="/#omnichannel" onClick={(event) => handleSectionClick(event, "omnichannel")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
+              Omnichannel
+            </a>
+            <a href="/#ai-models" onClick={(event) => handleSectionClick(event, "ai-models")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
+              Multi-LLM
             </a>
             <Link
               to="/pricing"
               className={cn(
-                "inline-flex h-9 items-center rounded-full px-3 text-sm font-medium transition-colors hover:text-volt",
-                pathname === "/pricing" && "ios-pill-active text-fg",
+                "inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60",
+                pathname === "/pricing" && "bg-blue-50 text-[#1264d8] font-semibold",
               )}
             >
               Pricing
@@ -122,24 +131,26 @@ function SiteHeader() {
           </nav>
 
           {/* Zone 3: Actions */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2.5 shrink-0">
             <Link
               to="/console"
               className={cn(
-                buttonVariants({ variant: "line", size: "sm" }),
-                "hidden lg:inline-flex text-xs h-9",
-                pathname === "/console" && "border-volt/50 text-white bg-volt/10",
+                "hidden lg:inline-flex items-center justify-center text-xs font-semibold text-slate-700 hover:text-[#1264d8] px-3.5 py-2 rounded-full hover:bg-slate-100 transition-colors",
+                pathname === "/console" && "text-[#1264d8] bg-blue-50",
               )}
             >
               Console
             </Link>
-            <Link to="/pricing" className={cn(buttonVariants({ size: "sm" }), "h-9 text-xs")}>
-              <span>Get a Line</span>
-              <ArrowUpRight className="size-3.5 opacity-80" />
+            <Link
+              to="/pricing"
+              className="inline-flex items-center gap-1.5 bg-[#1264d8] hover:bg-[#0e52b5] text-white rounded-full px-5 py-2 text-xs sm:text-sm font-semibold shadow-md shadow-[#1264d8]/20 transition-all cursor-pointer"
+            >
+              <span>Try for Free</span>
+              <ArrowUpRight className="size-3.5 opacity-90" />
             </Link>
             <button
               type="button"
-              className="inline-flex size-9 items-center justify-center rounded-full text-muted hover:text-white lg:hidden"
+              className="inline-flex size-9 items-center justify-center rounded-full text-slate-600 hover:text-slate-900 lg:hidden"
               aria-expanded={open}
               aria-controls="mobile-navigation"
               aria-label={open ? "Close menu" : "Open menu"}
@@ -199,17 +210,17 @@ function SiteFooter() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
             <Mark />
-            <span className="text-base font-semibold tracking-tight text-white">VELA</span>
+            <span className="text-base font-bold tracking-tight text-fg">VELA</span>
           </div>
           <p className="mt-4 max-w-sm text-sm text-muted leading-relaxed">
-            Next-generation enterprise telecommunications cloud. Direct SIP trunking, WebRTC browser softphones, WireGuard encrypted tunnels, and disposable remote virtual desktops with zero KYC.
+            Enterprise telecommunications cloud and intelligent contact center platform. Global SIP trunking, WebRTC browser softphones, WireGuard encrypted tunnels, and multi-LLM intelligence.
           </p>
-          <div className="mt-6 flex items-center gap-3 text-xs text-faint">
-            <span>Encrypted WebRTC</span>
+          <div className="mt-6 flex items-center gap-3 text-xs text-muted">
+            <span>Claude 3.5 & GPT-4o & Gemini</span>
             <span aria-hidden="true">·</span>
-            <span>WireGuard Protocol</span>
+            <span>Predictive AI Dialer</span>
             <span aria-hidden="true">·</span>
-            <span>Crypto Settlement</span>
+            <span>130+ Global DIDs</span>
           </div>
         </div>
 
