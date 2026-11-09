@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#fffaf4"/><stop offset="1" stop-color="#f7eee8"/></linearGradient></defs>
+  <rect width="960" height="540" fill="url(#g)"/>
+  <text x="54" y="62" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="700" letter-spacing="2" fill="#7c5a48">ONLY IF AN IDENTITY WARNING APPEARS</text>
+  <rect x="144" y="105" width="672" height="354" rx="14" fill="#fff" stroke="#e8d8ca" stroke-width="2"/>
+  <circle cx="220" cy="177" r="32" fill="#fff2e4"/><path d="M220 156 240 193h-40z" fill="#d58a21"/><path d="M220 168v12m0 6v2" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <text x="271" y="167" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="600" fill="#352c26">Pause and verify the remote PC</text>
+  <text x="271" y="193" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#76675e">A certificate or identity prompt may be shown before the session opens.</text>
+  <rect x="191" y="230" width="578" height="62" rx="8" fill="#fff9f3" stroke="#e8c9a7"/>
+  <text x="216" y="255" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="600" fill="#694c35">Compare the displayed computer name and certificate</text>
+  <text x="216" y="276" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#826e5e">Confirm the details with your IT administrator if uncertain.</text>
+  <ellipse cx="480" cy="261" rx="294" ry="36" fill="none" stroke="#e33b36" stroke-width="6"/>
+  <rect x="191" y="315" width="271" height="82" rx="9" fill="#f6fbf7" stroke="#c8e1d0"/>
+  <path d="m216 353 8 8 16-19" fill="none" stroke="#27824c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="251" y="351" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="600" fill="#286441">Matches your IT instructions?</text>
+  <text x="251" y="373" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#587765">Continue only after you verify it.</text>
+  <rect x="478" y="315" width="291" height="82" rx="9" fill="#fff6f5" stroke="#edc0bc"/>
+  <path d="m504 343 16 16m0-16-16 16" stroke="#bb3f38" stroke-width="4" stroke-linecap="round"/>
+  <text x="535" y="351" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="600" fill="#8a3430">Does not match or unsure?</text>
+  <text x="535" y="373" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#8c6662">Cancel and ask your administrator.</text>
+  <path d="M786 207C782 224 779 239 775 250" fill="none" stroke="#e33b36" stroke-width="6" stroke-linecap="round"/>
+  <path d="m757 245 17 16-18 11" fill="none" stroke="#e33b36" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

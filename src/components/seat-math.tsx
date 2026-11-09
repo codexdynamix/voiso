@@ -5,22 +5,22 @@ import { cn } from "@/lib/cn";
 
 export function SeatMath() {
   const [seats, setSeats] = useState(12);
-  const voisoCost = seats * 65; // Voiso average seat cost
   const quote = velaForSeats(seats);
-  const savings = Math.max(0, voisoCost - quote.monthly);
 
   return (
     <div className="ios-glass rounded-3xl p-6 md:p-9 border border-white/10 shadow-2xl">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
           <span className="text-xs font-semibold uppercase tracking-wider text-volt">
-            Cost & Capacity Calculator
+            Example capacity selector
           </span>
           <h2 className="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight text-white">
-            Stop paying per-seat taxes to legacy telecom
+            Estimate a sample workspace tier
           </h2>
           <p className="mt-1 text-xs sm:text-sm text-muted">
-            Slide to match your team size. See how Vela eliminates seat markups compared to Voiso.
+            Adjust the team size to see an illustrative plan estimate. This is
+            not a quote and excludes carrier, phone-number, RDP, and provider
+            charges.
           </p>
         </div>
 
@@ -55,41 +55,42 @@ export function SeatMath() {
           <span>1 seat (Solo)</span>
           <span>12 seats (Core)</span>
           <span>25 seats (Scale)</span>
-          <span>50+ seats (Enterprise)</span>
+          <span>50 seats (Enterprise)</span>
         </div>
       </div>
 
-      {/* Comparison Cards Grid */}
+      {/* Example Estimate Cards */}
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <Figure
-          label="Voiso / Zadarma Estimated"
-          value={`$${voisoCost.toLocaleString()}`}
-          sublabel="Billed per seat"
-          hint="$65/agent/mo + PBX add-ons"
+          label="Selected example tier"
+          value={quote.plan.name}
+          sublabel="Based on sample seat limits"
+          hint="Plan contents and provider availability are not confirmed"
           _muted
         />
         <Figure
-          label={`Vela ${quote.plan.name} Tier`}
+          label="Illustrative workspace estimate"
           value={`$${quote.monthly.toLocaleString()}`}
-          sublabel="Flat workspace fee"
+          sublabel="Example USD / month"
           hint={
             quote.extra > 0
-              ? `Includes 25 core seats + ${quote.extra} overflow @ 6 USDT`
-              : `All ${seats} agent seats included in flat pool`
+              ? `Example allowance plus ${quote.extra} additional seat(s); final pricing is unverified`
+              : `Example estimate for ${seats} agent seat(s)`
           }
           highlight
         />
         <Figure
-          label="Estimated Monthly Retained"
-          value={`$${savings.toLocaleString()}`}
-          sublabel="Net capital saved"
-          hint={`Save ~${Math.round((savings / voisoCost) * 100)}% every month with zero seat penalty`}
+          label="Costs not included"
+          value="Carrier + RDP"
+          sublabel="Confirm with providers"
+          hint="Phone-number, usage, compliance, and hosted Windows desktop costs are not quoted here"
           accent
         />
       </div>
 
       <p className="mt-6 text-xs text-muted/70 leading-relaxed">
-        Calculations in USDT (1:1 with USD). Minute overages past included pool billed at 0.012 USDT per minute. Inbound calls to all attached international DIDs are 100% free with zero per-minute fees.
+        Sample values only. No carrier rates, number availability, call charges,
+        taxes, KYC requirements, or hosted-desktop costs have been confirmed.
       </p>
     </div>
   );

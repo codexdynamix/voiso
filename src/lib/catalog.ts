@@ -1,6 +1,5 @@
 export type PlanId = "relay" | "lattice" | "foundry";
 export type Term = "month" | "year";
-export type AssetId = "usdt" | "usdc" | "btc" | "eth" | "xmr" | "ltc";
 export type ProtocolId = "wg" | "ovpn" | "ike";
 
 export type Plan = {
@@ -114,75 +113,6 @@ export function legacyMonthly(seats: number) {
   return seats * 52;
 }
 
-export type Asset = {
-  id: AssetId;
-  label: string;
-  network: string;
-  rate: number;
-  digits: number;
-  address: string;
-};
-
-export const ASSETS: Asset[] = [
-  {
-    id: "usdt",
-    label: "USDT",
-    network: "TRC-20",
-    rate: 1,
-    digits: 2,
-    address: "TSandBoxVelaDoNotSendUSDT111111",
-  },
-  {
-    id: "usdc",
-    label: "USDC",
-    network: "ERC-20",
-    rate: 1,
-    digits: 2,
-    address: "0x5andb0xvela000usdc000donotsend",
-  },
-  {
-    id: "btc",
-    label: "BTC",
-    network: "Bitcoin",
-    rate: 67420,
-    digits: 6,
-    address: "bc1qsandboxveladonotsend000000000000",
-  },
-  {
-    id: "eth",
-    label: "ETH",
-    network: "Ethereum",
-    rate: 3184,
-    digits: 5,
-    address: "0x5andb0xvela0000eth000donotsend",
-  },
-  {
-    id: "xmr",
-    label: "XMR",
-    network: "Monero",
-    rate: 312,
-    digits: 4,
-    address: "8SandboxVelaDoNotSendXMR000000000000",
-  },
-  {
-    id: "ltc",
-    label: "LTC",
-    network: "Litecoin",
-    rate: 86,
-    digits: 4,
-    address: "ltc1qsandboxveladonotsend00000000",
-  },
-];
-
-export function assetById(id: AssetId): Asset {
-  return ASSETS.find((asset) => asset.id === id) ?? ASSETS[0];
-}
-
-export function cryptoAmount(usd: number, id: AssetId) {
-  const asset = assetById(id);
-  return (usd / asset.rate).toFixed(asset.digits);
-}
-
 export type Did = {
   id: string;
   city: string;
@@ -197,6 +127,13 @@ export const DIDS: Did[] = [
   { id: "+31 20 555 1180", city: "Amsterdam", country: "NL", monthly: 3 },
   { id: "+65 6555 2204", city: "Singapore", country: "SG", monthly: 4 },
   { id: "+81 3 5550 2291", city: "Tokyo", country: "JP", monthly: 5 },
+  { id: "+45 32 55 01 48", city: "Copenhagen", country: "DK", monthly: 3 },
+  { id: "+47 21 55 01 48", city: "Oslo", country: "NO", monthly: 3 },
+  { id: "+46 8 555 01 48", city: "Stockholm", country: "SE", monthly: 3 },
+  { id: "+358 9 555 0148", city: "Helsinki", country: "FI", monthly: 3 },
+  { id: "+354 555 0148", city: "Reykjavík", country: "IS", monthly: 4 },
+  { id: "+61 2 5550 0148", city: "Sydney", country: "AU", monthly: 4 },
+  { id: "+1 416 555 0148", city: "Toronto", country: "CA", monthly: 3 },
   { id: "+55 11 5555 2206", city: "São Paulo", country: "BR", monthly: 3 },
   { id: "+971 4 555 2201", city: "Dubai", country: "AE", monthly: 5 },
 ];
@@ -296,6 +233,67 @@ export function machineById(id: string) {
   return MACHINES.find((machine) => machine.id === id) ?? MACHINES[1];
 }
 
+export type ServerPlan = {
+  id: string;
+  name: string;
+  price: number;
+  specs: string[];
+};
+
+export const VPS_PLANS: ServerPlan[] = [
+  {
+    id: "vps-basic",
+    name: "Basic",
+    price: 12,
+    specs: ["4 AMD EPYC cores", "8 GB DDR4 ECC", "80 GB NVMe · RAID 10", "10 Gbps · 5 TB", "Windows Server 2019/22", "New York or Chicago"],
+  },
+  {
+    id: "vps-standard",
+    name: "Standard",
+    price: 24,
+    specs: ["6 AMD EPYC cores", "16 GB DDR4 ECC", "160 GB NVMe · RAID 10", "10 Gbps · 10 TB", "Windows Server 2019/22", "New York or Chicago"],
+  },
+  {
+    id: "vps-professional",
+    name: "Professional",
+    price: 48,
+    specs: ["12 AMD EPYC cores", "32 GB DDR4 ECC", "320 GB NVMe · RAID 10", "10 Gbps · 20 TB", "Windows Server 2019/22", "New York or Chicago"],
+  },
+  {
+    id: "vps-ultimate",
+    name: "Ultimate",
+    price: 96,
+    specs: ["24 AMD EPYC cores", "64 GB DDR4 ECC", "500 GB NVMe · RAID 10", "10 Gbps · 50 TB", "Windows Server 2019/22", "New York or Chicago"],
+  },
+];
+
+export const DEDICATED_PLANS: ServerPlan[] = [
+  {
+    id: "dedicated-silver",
+    name: "Silver",
+    price: 70,
+    specs: ["Intel Xeon X3470 · 4 cores", "16 GB ECC", "120 GB SSD + 2 TB SATA", "1 Gbps · 20 TB", "Chicago, Illinois", "1 IP · iDRAC/IPMI · 1–3 day setup"],
+  },
+  {
+    id: "dedicated-gold",
+    name: "Gold",
+    price: 85,
+    specs: ["Dual Intel Xeon L5630 · 8 cores", "24 GB ECC", "120 GB SSD + 2 TB SATA", "1 Gbps · 20 TB", "Chicago, Illinois", "1 IP · iDRAC/IPMI · 1–3 day setup"],
+  },
+  {
+    id: "dedicated-diamond",
+    name: "Diamond",
+    price: 110,
+    specs: ["Dual Intel Xeon L5630 · 8 cores", "72 GB ECC", "120 GB SSD + 2 TB SATA", "1 Gbps · 20 TB", "Chicago, Illinois", "1 IP · iDRAC/IPMI · 1–3 day setup"],
+  },
+  {
+    id: "dedicated-platinum",
+    name: "Platinum",
+    price: 150,
+    specs: ["Intel Xeon E5-2620 · 12 cores", "32 GB ECC", "2 × 120 GB SSD + 2 TB SATA", "1 Gbps · 20 TB", "Chicago, Illinois", "1 IP · iDRAC/IPMI · 1–3 day setup"],
+  },
+];
+
 export const PROTOCOLS: { id: ProtocolId; name: string; detail: string }[] = [
   { id: "wg", name: "WireGuard", detail: "Default. Short handshake, small surface." },
   { id: "ovpn", name: "OpenVPN", detail: "UDP 1194, when a network blocks WireGuard." },
@@ -312,32 +310,32 @@ export const LEADS = [
 
 export const FAQ = [
   {
-    q: "Do you require KYC?",
-    a: "No. A callsign is the account. Vela does not ask for a legal name, a government ID, a selfie, or a phone number you already own.",
+    q: "Does this preview require identity verification?",
+    a: "This preview does not collect identity documents. Requirements for a live service depend on the payment processor, number carrier, region, and applicable law.",
   },
   {
     q: "What is prohibited?",
-    a: "Fraud, spam, phishing, and unlawful access. No-KYC is not a permit to abuse carriers or other people's machines. Routes that burn our upstreams are dropped.",
+    a: "Any future live service must be used lawfully and in accordance with carrier, payment-provider, desktop-provider, and regional requirements. This preview does not authorize access to any external system.",
   },
   {
-    q: "Which assets can I pay with?",
-    a: "USDT on TRC-20, USDC on ERC-20, Bitcoin, Ethereum, Monero, and Litecoin. Quotes in this preview are fixed, not a live market.",
+    q: "Can I pay for an order here?",
+    a: "No. A payment processor and server-side payment verification are not connected. Do not send funds or treat an order preview as a payment request.",
   },
   {
-    q: "How fast is provisioning?",
-    a: "The sandbox unlocks a workspace immediately. On a real deployment, USDT usually clears in a few minutes and Bitcoin after one confirmation.",
+    q: "When are phone numbers and RDP provisioned?",
+    a: "Nothing is ordered or provisioned in this preview. Live fulfillment timing must be confirmed with the selected carrier and desktop provider after payment verification is implemented.",
   },
   {
-    q: "Do you keep VPN logs?",
-    a: "Traffic contents and DNS queries are not stored. Session counters reset when you disconnect. A dedicated exit IP on Foundry is reserved for your callsign, not shared.",
+    q: "Does the VPN control connect to a real network?",
+    a: "No. The tunnel controls and downloaded profiles are illustrative only and do not establish a VPN connection.",
   },
   {
-    q: "What happens to the desk on cancel?",
-    a: "The volume is wiped. Recordings that lived on it go with it. Thirty-day plans have no lock-in. Unused months on a yearly invoice return to the paying asset, minus the network fee.",
+    q: "Can I launch a paid desktop from this site?",
+    a: "No. The desktop screen is a browser preview. RDP provider provisioning, subscription changes, and cancellation are not connected.",
   },
   {
-    q: "Is this preview taking my crypto?",
-    a: "No. Invoice addresses here are not wallets. Use “Settle in sandbox” to try the workspace. Do not send real funds.",
+    q: "Is this preview taking a payment?",
+    a: "No payment is processed and no real wallet address is provided. Do not send funds based on this preview.",
   },
 ];
 

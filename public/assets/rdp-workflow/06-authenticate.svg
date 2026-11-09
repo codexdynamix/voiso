@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#f8fbff"/><stop offset="1" stop-color="#e8f0fa"/></linearGradient></defs>
+  <rect width="960" height="540" fill="url(#g)"/>
+  <text x="54" y="62" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="700" letter-spacing="2" fill="#46617e">IF WINDOWS ASKS YOU TO SIGN IN</text>
+  <rect x="170" y="108" width="620" height="348" rx="14" fill="#fff" stroke="#d5dfeb" stroke-width="2"/>
+  <circle cx="244" cy="180" r="32" fill="#eaf3ff"/><path d="M232 180h24v18h-24zM237 175a7 7 0 0 1 14 0v5h-4v-5a3 3 0 0 0-6 0v5h-4z" fill="#2872b7"/>
+  <text x="294" y="176" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="600" fill="#25364a">Use your assigned Windows account</text>
+  <text x="294" y="202" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#65758a">The exact prompt can differ by Windows version and company policy.</text>
+  <text x="218" y="261" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="600" fill="#46566a">Username format</text>
+  <rect x="218" y="275" width="524" height="53" rx="7" fill="#f8fafc" stroke="#ccd7e4"/>
+  <text x="241" y="308" font-family="Consolas,monospace" font-size="17" fill="#25364a">DOMAIN\username  or  username@domain.com</text>
+  <ellipse cx="480" cy="301" rx="264" ry="34" fill="none" stroke="#e33b36" stroke-width="6"/>
+  <text x="218" y="367" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="600" fill="#46566a">Password · then complete your organization’s MFA if prompted</text>
+  <rect x="218" y="382" width="524" height="42" rx="7" fill="#f8fafc" stroke="#ccd7e4"/>
+  <text x="240" y="409" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#7b899a">Your password is never shown in this guide.</text>
+  <path d="M807 231C790 254 774 274 758 290" fill="none" stroke="#e33b36" stroke-width="6" stroke-linecap="round"/>
+  <path d="m728 289 17 12-17 12" fill="none" stroke="#e33b36" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

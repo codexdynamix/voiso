@@ -68,7 +68,7 @@ export function VoicePanel() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
-      {/* Left Column: Live Call Stage & Messaging */}
+      {/* Left Column: Simulated Call Stage & Messaging */}
       <div className="min-w-0 ios-glass rounded-3xl p-6 border border-white/10 flex flex-col justify-between">
         <div>
           {/* Header Bar */}
@@ -90,7 +90,7 @@ export function VoicePanel() {
                 </select>
                 <span className="text-xs text-ios-green font-medium flex items-center gap-1">
                   <span className="size-1.5 rounded-full bg-ios-green" />
-                  Direct SIP Line
+                  Preview line · offline
                 </span>
               </div>
             </div>
@@ -98,7 +98,7 @@ export function VoicePanel() {
             <div className="text-right">
               <span className="text-xs text-muted block">{plan.name} Pool</span>
               <span className="text-sm font-semibold text-white tabular-nums">
-                {plan.minutes.toLocaleString()} minutes remaining
+                {plan.minutes.toLocaleString()} example minutes
               </span>
             </div>
           </div>
@@ -119,14 +119,14 @@ export function VoicePanel() {
                 />
                 <p className="text-xs uppercase tracking-wider font-semibold text-muted">
                   {store.callStatus === "idle"
-                    ? "Standby"
+                    ? "Preview ready"
                     : store.callStatus === "dialing"
                       ? store.callDirection === "in"
-                        ? "Incoming WebRTC Ring"
-                        : "Outbound Signaling"
+                        ? "Simulated incoming ring"
+                        : "Simulated dialing"
                       : store.held
-                        ? "Call On Hold"
-                        : "Encrypted WebRTC Session"}
+                        ? "Simulated call on hold"
+                        : "Simulated call"}
                 </p>
               </div>
 
@@ -147,7 +147,7 @@ export function VoicePanel() {
               </div>
             ) : (
               <p className="mt-3 text-xs text-muted">
-                Local WebRTC audio engine. Audio stream never recorded or stored on remote servers.
+                Preview only. No microphone audio is connected and no call is transmitted.
               </p>
             )}
 
@@ -201,11 +201,11 @@ export function VoicePanel() {
             <div>
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted font-semibold">
                 <Clock className="size-3.5" />
-                <span>Recent Calls</span>
+                <span>Simulated recent calls</span>
               </div>
 
               {store.recents.length === 0 ? (
-                <p className="mt-3 text-xs text-muted">No calls yet. Dial a number on the keypad to test.</p>
+                <p className="mt-3 text-xs text-muted">No preview calls yet. Use the keypad to see the local simulation.</p>
               ) : (
                 <ul className="mt-3 divide-y divide-line">
                   {store.recents.slice(0, 4).map((call) => (
@@ -235,7 +235,7 @@ export function VoicePanel() {
               <div>
                 <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted font-semibold">
                   <MessageSquare className="size-3.5" />
-                  <span>Instant SMS</span>
+                  <span>Sample SMS log · not sent</span>
                 </div>
 
                 <input
@@ -259,7 +259,7 @@ export function VoicePanel() {
                 <span className="tabular-nums text-[11px] text-muted font-mono">{smsBody.length}/160</span>
                 <Button type="submit" variant="line" size="sm" disabled={!smsTo.trim() || !smsBody.trim()}>
                   <Send className="size-3" />
-                  <span>Send SMS</span>
+                  <span>Save sample</span>
                 </Button>
               </div>
 
@@ -350,7 +350,7 @@ export function VoicePanel() {
                 disabled={!digits.trim() || busy}
               >
                 <Phone className="size-4" />
-                Call
+                Preview call
               </Button>
             </div>
 
@@ -375,14 +375,14 @@ export function VoicePanel() {
 function Dialer({ allowed }: { allowed: boolean }) {
   const [running, setRunning] = useState(false);
   const [index, setIndex] = useState(0);
-  const [result, setResult] = useState("Ready");
+  const [result, setResult] = useState("Sample queue ready");
   const lead = LEADS[index] ?? LEADS[0];
 
   useEffect(() => {
     if (!running) return;
-    setResult("Ringing");
+    setResult("Simulating call...");
     const ring = window.setTimeout(() => {
-      const outcomes = ["Human Connected · 18s", "Machine Detected · Skipped", "No Answer · Logged"];
+      const outcomes = ["Sample: answered · 18s", "Sample: voicemail detected", "Sample: no answer"];
       setResult(outcomes[index % outcomes.length] ?? "No answer");
     }, 700);
     const next = window.setTimeout(() => {
@@ -397,10 +397,10 @@ function Dialer({ allowed }: { allowed: boolean }) {
   if (!allowed) {
     return (
       <div className="mt-8 text-center p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-        <p className="text-sm font-medium text-white">Predictive dialer starts on Lattice</p>
-        <p className="mt-1 text-xs text-muted">Relay tier is limited to manual keypad dialing.</p>
+        <p className="text-sm font-medium text-white">Predictive dialer concept</p>
+        <p className="mt-1 text-xs text-muted">This plan comparison is illustrative; no live dialer is connected.</p>
         <Link to="/pricing" className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-volt hover:underline">
-          Upgrade to Lattice
+          Compare example tiers
         </Link>
       </div>
     );
@@ -409,7 +409,7 @@ function Dialer({ allowed }: { allowed: boolean }) {
   return (
     <div className="mt-6 flex flex-col justify-between flex-1">
       <div className="rounded-2xl bg-black/40 border border-white/5 p-4 text-center">
-        <p className="text-xs uppercase tracking-wider text-muted font-medium">Predictive Queue</p>
+        <p className="text-xs uppercase tracking-wider text-muted font-medium">Sample predictive queue</p>
         <p className="mt-2 text-xl font-semibold text-white">{lead.name}</p>
         <p className="mt-1 font-mono text-sm text-volt">{lead.number}</p>
         <div className="mt-3 inline-block rounded-full bg-white/[0.08] px-3 py-1 text-xs text-fg">
@@ -417,12 +417,15 @@ function Dialer({ allowed }: { allowed: boolean }) {
         </div>
       </div>
 
+      <p className="mb-3 text-center text-xs text-muted">
+        Sample leads only. This control does not place calls or contact customers.
+      </p>
       <Button
         className="mt-6 w-full"
         variant={running ? "line" : "primary"}
         onClick={() => setRunning((value) => !value)}
       >
-        {running ? "Pause Dialing Queue" : "Start Automated Campaign"}
+        {running ? "Pause preview" : "Run sample campaign"}
       </Button>
     </div>
   );

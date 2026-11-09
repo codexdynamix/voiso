@@ -93,6 +93,18 @@
   box-shadow: 0 8px 28px -24px rgba(24, 51, 71, 0.34);
 }
 
+.windows-desktop-wallpaper {
+  isolation: isolate;
+  background: #06152f url("/assets/windows-11-bloom-dark.jpg") center / cover no-repeat;
+}
+
+.windows-desktop-taskbar {
+  background: transparent;
+  border-top: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
 .ios-pill-active {
   background: #e4f0f5;
   color: var(--color-fg);
@@ -357,4 +369,112 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Voiso-like wordmark: tracked letters over the signature gradient. */
+.voiso-wordmark {
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  background-image: linear-gradient(90deg, #ff4d88 0%, #c044f5 40%, #6a5cff 70%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.06em;
+}
+
+.voiso-mark,
+.voiso-mark .text-white {
+  color: #ffffff;
+}
+
+/* Header "Try for Free" — the pink → violet → blue pill from the Voiso nav. */
+.voiso-cta {
+  background-image: linear-gradient(100deg, #ff5d92 0%, #b14dff 48%, #4d6bff 100%);
+  color: #ffffff !important;
+  box-shadow: 0 10px 24px -12px rgba(120, 70, 255, 0.8);
+  border: 0;
+}
+
+.voiso-cta:hover {
+  filter: saturate(1.06) brightness(1.05);
+}
+
+@keyframes banner-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.banner-in {
+  animation: banner-in 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/*
+  Product pages were authored for a dark UI and globally remap `.text-white`
+  to ink so they read on the light canvas. Colored Voiso panels, filled
+  buttons, and the dialer still need real white type. These rules are more
+  specific than the remap and only target those surfaces.
+*/
+.bg-\[\#072B56\],
+.bg-\[\#054E38\],
+.bg-\[\#1E1B4B\],
+.bg-\[\#0B1118\],
+.bg-\[\#1A2634\],
+.bg-\[\#98104E\],
+.bg-\[\#E8592A\],
+.bg-\[\#1264d8\],
+.bg-\[\#0e52b5\],
+.bg-\[\#EA3943\],
+.bg-\[\#FF492C\],
+.bg-slate-900,
+.bg-emerald-600,
+.bg-emerald-500,
+.bg-rose-500,
+.bg-blue-600,
+.bg-purple-600,
+.bg-volt,
+.bg-ios-green,
+.bg-hangup,
+.from-volt.text-white,
+.bg-\[\#072B56\].text-white,
+.bg-\[\#054E38\].text-white,
+.bg-\[\#1E1B4B\].text-white,
+.bg-\[\#0B1118\].text-white,
+.bg-\[\#1A2634\].text-white,
+.bg-slate-900.text-white {
+  color: #ffffff;
+}
+
+.bg-\[\#072B56\] .text-white,
+.bg-\[\#054E38\] .text-white,
+.bg-\[\#1E1B4B\] .text-white,
+.bg-\[\#0B1118\] .text-white,
+.bg-\[\#1A2634\] .text-white,
+.bg-\[\#98104E\] .text-white,
+.bg-\[\#E8592A\] .text-white,
+.bg-\[\#1264d8\] .text-white,
+.bg-\[\#EA3943\] .text-white,
+.bg-slate-900 .text-white,
+.bg-emerald-600 .text-white,
+.bg-emerald-500 .text-white,
+.bg-rose-500 .text-white,
+.bg-blue-600 .text-white,
+.bg-purple-600 .text-white,
+.bg-volt .text-white,
+.bg-ios-green .text-white,
+.bg-hangup .text-white,
+.from-volt .text-white,
+.bg-\[\#1264d8\].text-white,
+.bg-\[\#0e52b5\].text-white,
+.bg-\[\#EA3943\].text-white,
+.bg-\[\#FF492C\].text-white,
+.bg-volt.text-white,
+.bg-ios-green.text-white,
+.bg-hangup.text-white,
+.bg-emerald-600.text-white,
+.bg-rose-500.text-white {
+  color: #ffffff;
 }

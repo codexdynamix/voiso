@@ -13,7 +13,7 @@ export const Route = createFileRoute("/pricing")({
       { title: "Pricing — Vela Communications Cloud" },
       {
         name: "description",
-        content: "Predictable flat workspace rates for voice, encrypted tunnels, and virtual desktops. No per-seat penalties, no KYC.",
+        content: "Illustrative workspace estimates for voice, required RDP desktops, VPS plans, and dedicated servers. Live rates and ordering are not connected.",
       },
     ],
   }),
@@ -29,18 +29,21 @@ function PricingPage() {
         <Wrap className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1 text-xs text-muted backdrop-blur-md mb-4">
             <span className="size-1.5 rounded-full bg-volt" />
-            <span className="font-semibold text-white">Transparent Flat Billing</span>
+            <span className="font-semibold text-white">Plan comparison · Preview</span>
           </div>
 
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl text-white">
-            One workspace price.{" "}
+            Example workspace tiers.{" "}
             <span className="bg-gradient-to-r from-volt to-white bg-clip-text text-transparent">
-              Zero seat taxes.
+              Compare options.
             </span>
           </h1>
 
           <p className="mt-4 text-base sm:text-lg text-muted leading-relaxed">
-            Settle in USDT, USDC, BTC, ETH, XMR, or LTC. Cancel anytime with zero lock-in. Annual commitment saves 15% with prorated unused months returned to your paying asset.
+            Pick a tier, choose a phone region and required RDP desktop, then
+            review optional server plans. Prices and service details are
+            illustrative; payment, carrier fulfillment, and desktop
+            provisioning are not connected in this preview.
           </p>
 
           <div className="mt-8 flex justify-center">
@@ -62,32 +65,32 @@ function PricingPage() {
           <div className="flex items-center gap-3">
             <Zap className="size-4 text-volt shrink-0" />
             <div>
-              <p className="font-semibold text-white">Instant Activation</p>
-              <p className="text-muted">Lines provision automatically</p>
+              <p className="font-semibold text-white">Order builder</p>
+              <p className="text-muted">Review services and estimated costs</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <Globe className="size-4 text-ios-green shrink-0" />
             <div>
-              <p className="font-semibold text-white">Free Inbound Calls</p>
-              <p className="text-muted">Zero per-minute inbound fee</p>
+              <p className="font-semibold text-white">Phone numbers</p>
+              <p className="text-muted">Included allowance varies by tier</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <Lock className="size-4 text-ios-purple shrink-0" />
             <div>
-              <p className="font-semibold text-white">No KYC Required</p>
-              <p className="text-muted">Private callsign identification</p>
+              <p className="font-semibold text-white">Provider requirements</p>
+              <p className="text-muted">Confirm by region and service</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <ShieldCheck className="size-4 text-volt shrink-0" />
             <div>
-              <p className="font-semibold text-white">Transparent Overages</p>
-              <p className="text-muted">0.012 USDT/min past quota</p>
+              <p className="font-semibold text-white">Illustrative rates</p>
+              <p className="text-muted">Confirm before ordering</p>
             </div>
           </div>
         </div>

@@ -6,9 +6,19 @@ import { cn } from "@/lib/cn";
 import { useHydrateVela } from "@/lib/store";
 
 const PRODUCT_LINKS = [
-  { to: "/voice", label: "Voice", detail: "Browser calling and global numbers" },
-  { to: "/tunnel", label: "Tunnel", detail: "Private WireGuard connectivity" },
-  { to: "/desk", label: "Desk", detail: "Flexible remote workstations" },
+  { to: "/checkout", hash: "phones", label: "Phone Numbers" },
+  { to: "/checkout", hash: "rdp", label: "RDP Plans" },
+  { to: "/checkout", hash: "vps", label: "VPS Plans" },
+  { to: "/checkout", hash: "dedicated", label: "Dedicated Servers" },
+  { to: "/checkout", hash: "tunnel", label: "Secure Tunnel" },
+] as const;
+
+const HOME_SECTION_LINKS = [
+  { id: "sales", label: "Sales" },
+  { id: "support", label: "Support" },
+  { id: "flow-builder", label: "Flow Builder" },
+  { id: "omnichannel", label: "Omnichannel" },
+  { id: "ai-models", label: "Multi-LLM" },
 ] as const;
 
 export function Wrap({ className, children }: { className?: string; children: ReactNode }) {
@@ -29,6 +39,23 @@ export function Shell({ children }: { children: ReactNode }) {
         Skip to content
       </a>
 
+      <div className="border-b border-amber-300 bg-amber-50 text-amber-950" role="status">
+        <Wrap className="flex flex-col gap-1 py-2 text-xs sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <p>
+            <span className="font-bold uppercase tracking-wide">Preview only:</span>{" "}
+            calls, payments, phone numbers, VPN, and remote desktops are not
+            connected to live services. No order is placed or payment taken.
+          </p>
+          <Link
+            to="/checkout"
+            search={{ plan: "lattice", term: "month" }}
+            className="shrink-0 font-semibold underline underline-offset-2"
+          >
+            Configure an order
+          </Link>
+        </Wrap>
+      </div>
+
       <SiteHeader />
 
       <main id="content" className="flex-1">
@@ -42,6 +69,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
 function SiteHeader() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const hash = useRouterState({ select: (state) => state.location.hash });
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -64,65 +92,81 @@ function SiteHeader() {
   return (
     <div className="sticky top-0 z-40 w-full pt-2 sm:pt-3 pb-2 transition-all">
       <Wrap>
-        <header className="flex h-14 md:h-16 items-center justify-between gap-4 md:gap-8 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-sm px-4 md:px-6 transition-all">
+        <header className="flex h-14 md:h-16 items-center justify-between gap-4 md:gap-6 rounded-full bg-white/92 backdrop-blur-xl border border-slate-200/80 shadow-[0_10px_40px_-24px_rgba(16,24,40,0.45)] px-4 md:px-6 transition-all">
           {/* Zone 1: Single brand wordmark with emblem */}
-          <Link to="/" className="inline-flex items-center gap-2.5 text-slate-900 whitespace-nowrap shrink-0 group">
+          <Link
+            to="/"
+            aria-label="Vela home"
+            title="Go to home page"
+            className="inline-flex items-center gap-2.5 text-slate-900 whitespace-nowrap shrink-0"
+          >
             <Mark />
-            <span className="text-lg font-extrabold tracking-tight text-slate-900 group-hover:text-[#1264d8] transition-colors">
-              VELA
-            </span>
-            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50/80 px-2.5 py-0.5 text-[11px] font-semibold text-[#1264d8]">
-              <span className="size-1.5 rounded-full bg-[#1264d8] animate-ping" />
+            <span className="voiso-wordmark text-[1.05rem] leading-none">VELA</span>
+            <span className="hidden 2xl:inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500">
               Communications Cloud
             </span>
           </Link>
 
-          {/* Navigation Links matching Voiso standard */}
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
-            <details className="group relative">
-              <summary
+          {/* Service links stay visible in the main header. */}
+          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Primary">
+            <Link
+              to="/"
+              className={cn(
+                "inline-flex h-9 items-center rounded-full px-2 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100/60 hover:text-[#1264d8] xl:px-2.5",
+                pathname === "/" && !hash && "bg-blue-50 text-[#1264d8]",
+              )}
+            >
+              Home
+            </Link>
+            {PRODUCT_LINKS.map((link) => (
+              <Link
+                key={link.hash}
+                to={link.to}
+                search={{ plan: "lattice", term: "month" }}
+                hash={link.hash}
                 className={cn(
-                  "inline-flex h-9 list-none items-center gap-1.5 rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60 cursor-pointer",
-                  ["/voice", "/tunnel", "/desk"].includes(pathname) && "bg-blue-50 text-[#1264d8] font-semibold",
+                  "inline-flex h-9 items-center rounded-full px-2 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100/60 hover:text-[#1264d8] xl:px-2.5",
+                  pathname === link.to && hash === `#${link.hash}` && "bg-blue-50 text-[#1264d8]",
                 )}
               >
-                Products
+                {link.label}
+              </Link>
+            ))}
+            <details className="group relative hidden xl:block">
+              <summary
+                className="inline-flex h-9 list-none items-center gap-1.5 rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60 cursor-pointer"
+              >
+                Solutions
                 <ChevronDown className="size-3.5 transition-transform group-open:rotate-180" />
               </summary>
-              <div className="absolute left-0 top-full z-50 w-72 pt-2">
-                <div className="rounded-2xl p-2 shadow-xl border border-slate-200 bg-white">
-                  {PRODUCT_LINKS.map((link) => (
-                    <Link
-                      key={link.to}
-                      to={link.to}
-                      className="block rounded-xl px-3 py-2.5 transition-colors hover:bg-slate-50"
+              <div className="absolute left-0 top-full z-50 w-48 pt-2">
+                <div className="rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
+                  {HOME_SECTION_LINKS.map(({ id, label }) => (
+                    <a
+                      key={id}
+                      href={`/#${id}`}
+                      onClick={(event) => handleSectionClick(event, id)}
+                      className="block rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
                     >
-                      <span className="block text-sm font-semibold text-slate-900">{link.label}</span>
-                      <span className="mt-0.5 block text-xs text-slate-500">{link.detail}</span>
-                    </Link>
+                      {label}
+                    </a>
                   ))}
                 </div>
               </div>
             </details>
-            <a href="/#sales" onClick={(event) => handleSectionClick(event, "sales")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
-              Sales
-            </a>
-            <a href="/#support" onClick={(event) => handleSectionClick(event, "support")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
-              Support
-            </a>
-            <a href="/#flow-builder" onClick={(event) => handleSectionClick(event, "flow-builder")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
-              Flow Builder
-            </a>
-            <a href="/#omnichannel" onClick={(event) => handleSectionClick(event, "omnichannel")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
-              Omnichannel
-            </a>
-            <a href="/#ai-models" onClick={(event) => handleSectionClick(event, "ai-models")} className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60">
-              Multi-LLM
-            </a>
+            <Link
+              to="/integrations"
+              className={cn(
+                "hidden h-9 items-center rounded-full px-2 text-xs font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60 xl:inline-flex",
+                pathname === "/integrations" && "bg-blue-50 text-[#1264d8] font-semibold",
+              )}
+            >
+              Integrations
+            </Link>
             <Link
               to="/pricing"
               className={cn(
-                "inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60",
+                "inline-flex h-9 items-center rounded-full px-2 text-xs font-medium text-slate-600 transition-colors hover:text-[#1264d8] hover:bg-slate-100/60",
                 pathname === "/pricing" && "bg-blue-50 text-[#1264d8] font-semibold",
               )}
             >
@@ -135,17 +179,18 @@ function SiteHeader() {
             <Link
               to="/console"
               className={cn(
-                "hidden lg:inline-flex items-center justify-center text-xs font-semibold text-slate-700 hover:text-[#1264d8] px-3.5 py-2 rounded-full hover:bg-slate-100 transition-colors",
+                "hidden xl:inline-flex items-center justify-center text-xs font-semibold text-slate-700 hover:text-[#1264d8] px-3.5 py-2 rounded-full hover:bg-slate-100 transition-colors",
                 pathname === "/console" && "text-[#1264d8] bg-blue-50",
               )}
             >
               Console
             </Link>
             <Link
-              to="/pricing"
-              className="inline-flex items-center gap-1.5 bg-[#1264d8] hover:bg-[#0e52b5] text-white rounded-full px-5 py-2 text-xs sm:text-sm font-semibold shadow-md shadow-[#1264d8]/20 transition-all cursor-pointer"
+              to="/checkout"
+              search={{ plan: "lattice", term: "month" }}
+              className="voiso-cta inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-xs sm:text-sm font-semibold transition-all cursor-pointer"
             >
-              <span>Try for Free</span>
+              <span>Order services</span>
               <ArrowUpRight className="size-3.5 opacity-90" />
             </Link>
             <button
@@ -165,19 +210,50 @@ function SiteHeader() {
         {open ? (
           <div id="mobile-navigation" className="mt-2 ios-glass rounded-2xl p-4 lg:hidden animate-in fade-in slide-in-from-top-2 duration-200">
             <nav className="flex flex-col gap-1">
-              <p className="px-4 pb-1 text-xs font-semibold uppercase tracking-wider text-muted">Products</p>
+              <Link
+                to="/"
+                className={cn(
+                  "flex h-11 items-center rounded-xl px-4 text-base font-medium transition-colors",
+                  pathname === "/" && !hash ? "ios-pill-active text-fg" : "text-muted hover:text-volt",
+                )}
+              >
+                Home
+              </Link>
+              <p className="px-4 pb-1 text-xs font-semibold uppercase tracking-wider text-muted">Services</p>
               {PRODUCT_LINKS.map((link) => (
                 <Link
-                  key={link.to}
+                  key={link.hash}
                   to={link.to}
+                  search={{ plan: "lattice", term: "month" }}
+                  hash={link.hash}
                   className={cn(
                     "flex h-11 items-center px-4 rounded-xl text-base font-medium transition-colors",
-                    pathname === link.to ? "ios-pill-active text-fg" : "text-muted hover:text-volt",
+                    pathname === link.to && hash === `#${link.hash}` ? "ios-pill-active text-fg" : "text-muted hover:text-volt",
                   )}
                 >
                   {link.label}
                 </Link>
               ))}
+              <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-muted">Solutions</p>
+              {HOME_SECTION_LINKS.map(({ id, label }) => (
+                <a
+                  key={id}
+                  href={`/#${id}`}
+                  onClick={(event) => handleSectionClick(event, id)}
+                  className="flex h-11 items-center rounded-xl px-4 text-base font-medium text-muted transition-colors hover:text-volt"
+                >
+                  {label}
+                </a>
+              ))}
+              <Link
+                to="/integrations"
+                className={cn(
+                  "flex h-11 items-center rounded-xl px-4 text-base font-medium transition-colors",
+                  pathname === "/integrations" ? "ios-pill-active text-fg" : "text-muted hover:text-volt",
+                )}
+              >
+                Integrations
+              </Link>
               <a href="/#solutions" onClick={(event) => handleSectionClick(event, "solutions")} className="flex h-11 items-center rounded-xl px-4 text-base font-medium text-muted transition-colors hover:text-volt">
                 Solutions
               </a>
@@ -186,6 +262,13 @@ function SiteHeader() {
               </a>
               <Link to="/pricing" className="flex h-11 items-center rounded-xl px-4 text-base font-medium text-muted transition-colors hover:text-volt">
                 Pricing
+              </Link>
+              <Link
+                to="/checkout"
+                search={{ plan: "lattice", term: "month" }}
+                className="flex h-11 items-center rounded-xl px-4 text-base font-semibold text-volt transition-colors hover:bg-white/5"
+              >
+                Configure phone numbers & RDP
               </Link>
               <div className="my-2 border-t border-line" />
               <Link
@@ -210,18 +293,13 @@ function SiteFooter() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
             <Mark />
-            <span className="text-base font-bold tracking-tight text-fg">VELA</span>
+            <span className="voiso-wordmark text-[0.95rem] leading-none">VELA</span>
           </div>
           <p className="mt-4 max-w-sm text-sm text-muted leading-relaxed">
-            Enterprise telecommunications cloud and intelligent contact center platform. Global SIP trunking, WebRTC browser softphones, WireGuard encrypted tunnels, and multi-LLM intelligence.
+            Product preview for a communications workspace. Live calling,
+            number provisioning, payment processing, VPN, and hosted desktops
+            are not connected in this preview.
           </p>
-          <div className="mt-6 flex items-center gap-3 text-xs text-muted">
-            <span>Claude 3.5 & GPT-4o & Gemini</span>
-            <span aria-hidden="true">·</span>
-            <span>Predictive AI Dialer</span>
-            <span aria-hidden="true">·</span>
-            <span>130+ Global DIDs</span>
-          </div>
         </div>
 
         <div>
@@ -242,6 +320,11 @@ function SiteFooter() {
                 Disposable Cloud Desk
               </Link>
             </li>
+            <li>
+              <Link to="/integrations" className="text-muted hover:text-white transition-colors">
+                CRM & MicroSIP Integrations
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -259,7 +342,7 @@ function SiteFooter() {
                 search={{ plan: "lattice", term: "month" }}
                 className="text-muted hover:text-white transition-colors"
               >
-                Instant Activation
+                Configure phone numbers & RDP
               </Link>
             </li>
             <li>
@@ -275,9 +358,9 @@ function SiteFooter() {
         <Wrap className="flex flex-col gap-3 text-xs text-muted/80 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} VELA Communications Cloud. All network rights reserved.</p>
           <div className="flex flex-wrap gap-4 text-faint">
-            <span>Carrier-grade 99.99% SLA</span>
-            <span>Zero Call Recording Retention</span>
-            <span>Private Callsign Authentication</span>
+            <span>Preview environment</span>
+            <span>No payment is processed</span>
+            <span>Provider setup required for live service</span>
           </div>
         </Wrap>
       </div>

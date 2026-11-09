@@ -18,11 +18,11 @@ export function PriceCard({ plan, term }: { plan: Plan; term: Term }) {
       <div>
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wider text-muted">
-            {plan.featured ? "Recommended for Scale" : "Standard Tier"}
+            {plan.featured ? "Featured example" : "Example tier"}
           </span>
           {plan.featured && (
             <span className="rounded-full bg-volt/20 text-volt px-3 py-0.5 text-xs font-semibold">
-              Most Popular
+              Preview
             </span>
           )}
         </div>
@@ -32,17 +32,17 @@ export function PriceCard({ plan, term }: { plan: Plan; term: Term }) {
 
         <div className="mt-6 flex items-baseline gap-2">
           <span className="text-5xl font-semibold tracking-tight text-white tabular-nums">
-            {amount}
+            ${amount}
           </span>
           <span className="text-sm font-medium text-muted">
-            {term === "year" ? "USDT / yr" : "USDT / 30d"}
+            {term === "year" ? "USD / year" : "USD / month"}
           </span>
         </div>
 
         <p className="mt-1 text-xs text-muted/70">
           {term === "year"
-            ? `Equivalent to ${(amount / 12).toFixed(1)} USDT / month (billed annually)`
-            : `${plan.price} USDT standard monthly rate, cancel anytime`}
+            ? `Example estimate · ${(amount / 12).toFixed(2)} USD / month equivalent`
+            : "Illustrative monthly estimate · not a live quote"}
         </p>
 
         <div className="my-6 border-t border-line" />
@@ -62,13 +62,13 @@ export function PriceCard({ plan, term }: { plan: Plan; term: Term }) {
       <div className="mt-8 pt-4 border-t border-line">
         <Link
           to="/checkout"
-          search={{ plan: plan.id, term }}
+          search={{ plan: plan.id, term, phones: [] }}
           className={cn(
             buttonVariants({ variant: plan.featured ? "primary" : "line", size: "lg" }),
             "w-full flex items-center justify-center gap-2",
           )}
         >
-          <span>Subscribe to {plan.name}</span>
+          <span>Choose services with {plan.name}</span>
           <ArrowRight className="size-4" />
         </Link>
       </div>

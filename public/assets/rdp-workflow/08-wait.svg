@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#f5f9ff"/><stop offset="1" stop-color="#e4eefb"/></linearGradient></defs>
+  <rect width="960" height="540" fill="url(#g)"/>
+  <text x="54" y="62" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="700" letter-spacing="2" fill="#46617e">AFTER YOU SUBMIT YOUR SIGN-IN</text>
+  <rect x="155" y="112" width="650" height="323" rx="16" fill="#fff" stroke="#d7e1ed" stroke-width="2"/>
+  <rect x="190" y="148" width="82" height="62" rx="9" fill="#eaf3ff"/>
+  <path d="M204 160h54v36h-54zM199 200h64v5h-64zM222 205v5h18v-5" fill="none" stroke="#3276b8" stroke-width="3"/>
+  <text x="297" y="173" font-family="Segoe UI,Arial,sans-serif" font-size="21" font-weight="600" fill="#23364a">Windows is preparing your session</text>
+  <text x="297" y="198" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#6c7d91">Connecting to the remote computer and loading your desktop…</text>
+  <rect x="190" y="249" width="580" height="2" fill="#e3eaf3"/>
+  <circle cx="231" cy="303" r="17" fill="#eaf3ff" stroke="#e33b36" stroke-width="5"/>
+  <text x="270" y="299" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="600" fill="#31465e">Authenticate</text>
+  <text x="270" y="320" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#718198">Account and policy checks</text>
+  <path d="M414 303h75" stroke="#a9bbd0" stroke-width="3"/><path d="m482 295 9 8-9 8" fill="none" stroke="#a9bbd0" stroke-width="3"/>
+  <circle cx="530" cy="303" r="17" fill="#eaf3ff" stroke="#e33b36" stroke-width="5"/>
+  <text x="569" y="299" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="600" fill="#31465e">Open desktop</text>
+  <text x="569" y="320" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#718198">Session starts on the host</text>
+  <rect x="190" y="367" width="580" height="38" rx="8" fill="#f6f8fb"/>
+  <text x="212" y="391" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#64758a">If Windows shows an error, note its exact text and contact your IT administrator.</text>
+  <path d="M705 225C669 246 626 269 568 294" fill="none" stroke="#e33b36" stroke-width="6" stroke-linecap="round"/>
+  <path d="m570 287-20 16 21 12" fill="none" stroke="#e33b36" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

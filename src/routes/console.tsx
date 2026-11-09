@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { PhoneCall, Shield, Monitor, RefreshCw, CheckCircle2 } from "lucide-react";
+import { PhoneCall, Shield, Monitor, Server } from "lucide-react";
 import { DeskPanel } from "@/components/desk-panel";
 import { RecoveryDialog } from "@/components/recovery-dialog";
 import { Wrap } from "@/components/shell";
 import { TunnelPanel } from "@/components/tunnel-panel";
 import { VoicePanel } from "@/components/voice-panel";
-import { effectivePlanId, planById } from "@/lib/catalog";
+import { DEDICATED_PLANS, effectivePlanId, planById, VPS_PLANS } from "@/lib/catalog";
 import { cn } from "@/lib/cn";
 import { useVela } from "@/lib/store";
 
@@ -27,10 +27,11 @@ function ConsolePage() {
   const callsign = useVela((state) => state.callsign);
   const active = useVela((state) => state.active);
   const planId = useVela((state) => state.planId);
-  const invoiceId = useVela((state) => state.invoiceId);
-  const asset = useVela((state) => state.asset);
-  const reset = useVela((state) => state.resetWorkspace);
+  const selectedVpsId = useVela((state) => state.selectedVpsId);
+  const selectedDedicatedId = useVela((state) => state.selectedDedicatedId);
   const plan = planById(effectivePlanId(planId, active));
+  const selectedVps = VPS_PLANS.find((item) => item.id === selectedVpsId);
+  const selectedDedicated = DEDICATED_PLANS.find((item) => item.id === selectedDedicatedId);
 
   return (
     <Wrap className="py-8 md:py-12">
@@ -43,7 +44,7 @@ function ConsolePage() {
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-ios-green animate-pulse" />
               <span className="text-xs uppercase tracking-wider font-semibold text-muted">
-                Enterprise Workspace
+                Interactive Preview
               </span>
               <span className="text-muted/40">·</span>
               <span className="text-xs text-volt font-mono uppercase">{plan.name} Tier</span>
@@ -54,20 +55,16 @@ function ConsolePage() {
             </h1>
 
             <p className="mt-2 text-xs sm:text-sm text-muted">
-              {active ? (
-                <span className="flex items-center gap-1.5 text-ios-green">
-                  <CheckCircle2 className="size-4" />
-                  Invoice {invoiceId} confirmed via {asset.toUpperCase()} on-chain settlement.
-                </span>
-              ) : (
-                <>
-                  Running in live interactive sandbox mode. Full features enabled.{" "}
-                  <Link to="/pricing" className="text-volt font-medium hover:underline">
-                    Settle crypto invoice
-                  </Link>{" "}
-                  to reserve your callsign.
-                </>
-              )}
+              Calls, texts, VPN status, phone numbers, and desktop controls are
+              simulations only. No account is paid, provisioned, or connected
+              to live services.{" "}
+              <Link
+                to="/checkout"
+                search={{ plan: "lattice", term: "month" }}
+                className="text-volt font-medium hover:underline"
+              >
+                Configure an order
+              </Link>
             </p>
           </div>
 
@@ -75,13 +72,11 @@ function ConsolePage() {
             <span
               className={cn(
                 "rounded-full px-3.5 py-1 text-xs font-semibold flex items-center gap-1.5",
-                active
-                  ? "bg-ios-green/15 text-ios-green border border-ios-green/30"
-                  : "bg-volt/15 text-volt border border-volt/30",
+                "bg-amber-400/10 text-amber-200 border border-amber-300/30",
               )}
             >
               <span className="size-1.5 rounded-full bg-current" />
-              {active ? "Settled Account" : "Sandbox Preview"}
+              Preview only
             </span>
           </div>
         </div>
@@ -120,6 +115,28 @@ function ConsolePage() {
         </div>
       </div>
 
+      {selectedVps || selectedDedicated ? (
+        <section className="mt-6 rounded-3xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+          <div className="flex items-center gap-2">
+            <Server className="size-4 text-volt" />
+            <h2 className="text-sm font-semibold text-white">Selected server services</h2>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {[selectedVps && { type: "VPS", plan: selectedVps }, selectedDedicated && { type: "Dedicated server", plan: selectedDedicated }]
+              .filter((entry) => entry !== null && entry !== undefined)
+              .map((entry) => entry && (
+                <div key={entry.plan.id} className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-black/10 p-4">
+                  <div>
+                    <p className="text-sm font-semibold text-white">{entry.type} · {entry.plan.name}</p>
+                    <p className="mt-1 text-xs text-muted">Example selection · not ordered or provisioned</p>
+                  </div>
+                  <p className="shrink-0 text-sm font-semibold text-volt">${entry.plan.price} USD/mo</p>
+                </div>
+              ))}
+          </div>
+        </section>
+      ) : null}
+
       {/* Tab Panels */}
       <div className="mt-8">
         {pane === "voice" ? <VoicePanel /> : null}
@@ -127,19 +144,6 @@ function ConsolePage() {
         {pane === "desk" ? <DeskPanel /> : null}
       </div>
 
-      {/* Disconnect Workspace Action */}
-      {active ? (
-        <div className="mt-10 pt-6 border-t border-line flex justify-end">
-          <button
-            type="button"
-            onClick={reset}
-            className="inline-flex items-center gap-2 text-xs font-medium text-red-400/80 hover:text-red-400 hover:underline"
-          >
-            <RefreshCw className="size-3.5" />
-            <span>Terminate & Wipe This Sandbox Workspace</span>
-          </button>
-        </div>
-      ) : null}
     </Wrap>
   );
 }

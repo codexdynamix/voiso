@@ -20,9 +20,9 @@
  * `process.env`, which is why the merge has to happen before Vite starts.
  */
 import { spawn } from "node:child_process";
-import { readFileSync, realpathSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { constants as osConstants } from "node:os";
-import { dirname, join } from "node:path";
+import { delimiter, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const APP_ENV_REL_PATH = ".grok/app-env.json";
@@ -104,14 +104,57 @@ export function isMainModule(moduleUrl) {
   }
 }
 
+function resolveCommand(command, root) {
+  if (
+    !command ||
+    command.includes("/") ||
+    command.includes("\\") ||
+    command.endsWith(".cmd") ||
+    command.endsWith(".ps1") ||
+    command.endsWith(".exe")
+  ) {
+    return { command, args: [] };
+  }
+
+  const binDir = join(root, "node_modules", ".bin");
+  if (process.platform === "win32") {
+    if (command === "vite") {
+      const viteCli = join(root, "node_modules", "vite", "bin", "vite.js");
+      if (existsSync(viteCli)) return { command: process.execPath, args: [viteCli] };
+    }
+
+    for (const candidate of [`${command}.exe`, command]) {
+      const fullPath = join(binDir, candidate);
+      if (existsSync(fullPath)) return { command: fullPath, args: [] };
+    }
+  } else {
+    const fullPath = join(binDir, command);
+    if (existsSync(fullPath)) return { command: fullPath, args: [] };
+  }
+
+  return { command, args: [] };
+}
+
 function main(argv) {
   const [command, ...args] = argv;
   if (!command) {
     console.error("usage: node scripts/with-app-env.mjs <command> [args…]");
     process.exit(2);
   }
-  const env = mergeAppEnv(readAppEnv(projectRoot()), process.env);
-  const child = spawn(command, args, { stdio: "inherit", env });
+
+  const root = projectRoot();
+  const env = mergeAppEnv(readAppEnv(root), process.env);
+  const binDir = join(root, "node_modules", ".bin");
+  const pathEntries = [env.PATH ?? env.Path ?? "", binDir];
+  const pathValue = pathEntries.filter(Boolean).join(delimiter);
+  env.PATH = pathValue;
+  env.Path = pathValue;
+
+  const resolved = resolveCommand(command, root);
+  const child = spawn(resolved.command, [...resolved.args, ...args], {
+    stdio: "inherit",
+    env,
+  });
   // The dev server is long-running and is stopped by signalling this wrapper.
   for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
     process.on(signal, () => child.kill(signal));

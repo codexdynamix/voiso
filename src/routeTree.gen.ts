@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ConsoleRouteImport } from './routes/console'
 import { Route as DeskRouteImport } from './routes/desk'
+import { Route as IntegrationsRouteImport } from './routes/integrations'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as TunnelRouteImport } from './routes/tunnel'
 import { Route as VoiceRouteImport } from './routes/voice'
@@ -37,6 +38,11 @@ const DeskRoute = DeskRouteImport.update({
   path: '/desk',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IntegrationsRoute = IntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/console': typeof ConsoleRoute
   '/desk': typeof DeskRoute
+  '/integrations': typeof IntegrationsRoute
   '/pricing': typeof PricingRoute
   '/tunnel': typeof TunnelRoute
   '/voice': typeof VoiceRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/console': typeof ConsoleRoute
   '/desk': typeof DeskRoute
+  '/integrations': typeof IntegrationsRoute
   '/pricing': typeof PricingRoute
   '/tunnel': typeof TunnelRoute
   '/voice': typeof VoiceRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/console': typeof ConsoleRoute
   '/desk': typeof DeskRoute
+  '/integrations': typeof IntegrationsRoute
   '/pricing': typeof PricingRoute
   '/tunnel': typeof TunnelRoute
   '/voice': typeof VoiceRoute
@@ -84,16 +93,31 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/checkout' | '/console' | '/desk' | '/pricing' | '/tunnel' | '/voice'
+    | '/'
+    | '/checkout'
+    | '/console'
+    | '/desk'
+    | '/integrations'
+    | '/pricing'
+    | '/tunnel'
+    | '/voice'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/checkout' | '/console' | '/desk' | '/pricing' | '/tunnel' | '/voice'
+    | '/'
+    | '/checkout'
+    | '/console'
+    | '/desk'
+    | '/integrations'
+    | '/pricing'
+    | '/tunnel'
+    | '/voice'
   id:
     | '__root__'
     | '/'
     | '/checkout'
     | '/console'
     | '/desk'
+    | '/integrations'
     | '/pricing'
     | '/tunnel'
     | '/voice'
@@ -104,6 +128,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ConsoleRoute: typeof ConsoleRoute
   DeskRoute: typeof DeskRoute
+  IntegrationsRoute: typeof IntegrationsRoute
   PricingRoute: typeof PricingRoute
   TunnelRoute: typeof TunnelRoute
   VoiceRoute: typeof VoiceRoute
@@ -139,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeskRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/integrations': {
+      id: '/integrations'
+      path: '/integrations'
+      fullPath: '/integrations'
+      preLoaderRoute: typeof IntegrationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -168,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ConsoleRoute: ConsoleRoute,
   DeskRoute: DeskRoute,
+  IntegrationsRoute: IntegrationsRoute,
   PricingRoute: PricingRoute,
   TunnelRoute: TunnelRoute,
   VoiceRoute: VoiceRoute,

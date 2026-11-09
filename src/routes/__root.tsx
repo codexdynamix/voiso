@@ -13,7 +13,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Vela is a no-KYC communications cloud featuring VoIP numbers, WireGuard tunnels, and disposable virtual desktops settled in crypto.",
+          "Explore the VELA communications product preview for phone-number options, required RDP desktops, CRM workflows, and MicroSIP setup. Live ordering and provisioning are not connected.",
       },
       { name: "theme-color", content: "#050608" },
     ],

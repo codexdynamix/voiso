@@ -44,11 +44,16 @@ export function DeskPanel() {
   const setDeskOpen = useVela((state) => state.setDeskOpen);
   const plan = planById(effectivePlanId(planId, active));
   const machine = machineById(machineId);
+  const machineIds = useVela((state) => state.machineIds);
+  const provisionedIds = machineIds.length ? machineIds : [machineId];
+  const availableMachines = active
+    ? MACHINES.filter((item) => provisionedIds.includes(item.id))
+    : MACHINES;
 
   if (!deskOpen) {
     return (
       <div className="grid gap-6 md:grid-cols-2">
-        {MACHINES.map((item) => {
+        {availableMachines.map((item) => {
           const allowed = planAllows(plan.id, item.min);
           const selected = item.id === machineId;
           return (
@@ -62,7 +67,7 @@ export function DeskPanel() {
               <div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs uppercase tracking-wider font-semibold text-muted">
-                    {item.os} Instance
+                    Example {item.os} desktop
                   </span>
                   <span className="rounded-full bg-white/[0.06] px-2.5 py-0.5 text-[11px] font-mono text-muted">
                     {item.id}
@@ -91,7 +96,7 @@ export function DeskPanel() {
               <div className="mt-6 pt-4 border-t border-line flex items-center justify-between">
                 <span className="text-xs text-muted flex items-center gap-1.5">
                   <ShieldCheck className="size-3.5 text-ios-green" />
-                  Wipe on cancel
+                  Example plan
                 </span>
 
                 {allowed ? (
@@ -103,11 +108,11 @@ export function DeskPanel() {
                     }}
                   >
                     <Monitor className="size-3.5" />
-                    <span>Launch Desk</span>
+                    <span>Preview desktop</span>
                   </Button>
                 ) : (
                   <Link to="/pricing" className="text-xs font-semibold text-volt hover:underline">
-                    Included with Foundry
+                    Compare example plans
                   </Link>
                 )}
               </div>
@@ -153,7 +158,7 @@ function Desktop({
   const [file, setFile] = useState(FILES[2].name);
   const [notes, setNotes] = useState(FILES[2].body);
   const [lines, setLines] = useState<Line[]>([
-    { kind: "out", text: `${name} active on isolated gateway. Type 'help' for diagnostics.` },
+    { kind: "out", text: `Preview only: ${name} is not a remote desktop. Type 'help' to explore sample commands.` },
   ]);
   const [command, setCommand] = useState("");
 
@@ -177,15 +182,15 @@ function Desktop({
     if (!raw) return;
     const verb = raw.toLowerCase();
     let output = `command not found: ${raw}`;
-    if (verb === "help") output = "whoami · ip · status · clear · ping";
-    if (verb === "whoami") output = `callsign: ${callsign} (anonymous session)`;
+    if (verb === "help") output = "whoami · ip · status · clear · ping (all sample commands)";
+    if (verb === "whoami") output = `preview callsign: ${callsign}`;
     if (verb === "ip")
       output =
         address === "direct"
-          ? `gateway: direct · exit via ${region}`
-          : `encrypted tunnel address: ${address} via ${region}`;
-    if (verb === "status") output = `${name} · ${planName} · ${spec} · crypto verified`;
-    if (verb === "ping") output = "64 bytes from 10.8.4.1: icmp_seq=1 ttl=64 time=14.2 ms";
+          ? `example route: direct · ${region}`
+          : `example tunnel address: ${address} via ${region}`;
+    if (verb === "status") output = `preview configuration: ${name} · ${planName} · ${spec} · not connected`;
+    if (verb === "ping") output = "Preview response: no network host was contacted.";
     if (verb === "clear") {
       setLines([]);
       setCommand("");
@@ -221,6 +226,10 @@ function Desktop({
 
       {/* Main Workspace Stage */}
       <div className="desk-wallpaper p-4 md:p-6 grid gap-4">
+        <p className="rounded-xl border border-amber-300/20 bg-amber-300/5 px-3 py-2 text-xs leading-relaxed text-amber-100">
+          Desktop preview only. No Windows host, RDP connection, VPN, or remote
+          machine is provisioned by this demonstration.
+        </p>
         {/* Document Tab Pills */}
         <div className="flex flex-wrap gap-2">
           {FILES.map((item) => (
@@ -266,7 +275,7 @@ function Desktop({
               <div className="flex items-center justify-between pb-2 border-b border-white/10 text-xs text-muted">
                 <span className="flex items-center gap-1.5 font-medium text-white">
                   <TerminalIcon className="size-3 text-volt" />
-                  Terminal
+                  Sample command console
                 </span>
                 <span className="font-mono text-[10px] text-muted">sh-v5</span>
               </div>
@@ -307,10 +316,10 @@ function Desktop({
       {/* Bottom Session Footer */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line px-5 py-3 bg-black/40 text-xs">
         <p className="text-muted">
-          Secure sandbox. Clipboard isolated to browser session. Machine wiped upon termination.
+          Local UI simulation only. No remote session exists.
         </p>
         <Button variant="line" size="sm" onClick={onClose}>
-          Disconnect Session
+          Close preview
         </Button>
       </div>
     </div>

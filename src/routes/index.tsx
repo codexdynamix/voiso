@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import * as Accordion from "@radix-ui/react-accordion";
 import {
@@ -25,9 +25,6 @@ import { cn } from "@/lib/cn";
 import { playKeyTone, playRingbackTone } from "@/lib/dtmf";
 import {
   VoisoPointer,
-  TrustpilotBadge,
-  G2Badge,
-  CapterraBadge,
 } from "@/components/voiso-graphics";
 import {
   OMNI_CHANNELS,
@@ -41,7 +38,7 @@ import CALL_CENTER_AGENT_IMAGE from "@/assets/images/call-center-agent.jpg";
 import VOISO_SALES_MAN_IMAGE from "@/assets/images/voiso_sales_man_1794106456204.jpg";
 import VOISO_SUPPORT_WOMAN_IMAGE from "@/assets/images/voiso_support_woman_1794106474658.jpg";
 import VOISO_REMOTE_MAN_IMAGE from "@/assets/images/voiso_remote_man_1794106528829.jpg";
-import TELECOM_NETWORK_IMAGE from "@/assets/images/hero_telecom_network_1794093485203.jpg";
+import COPILOT_AGENT_IMAGE from "@/assets/images/copilot-agent.jpg";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -61,8 +58,11 @@ function ClaudeLogo({ className = "size-5" }: { className?: string }) {
 
 function OpenAiLogo({ className = "size-5" }: { className?: string }) {
   return (
-    <svg role="img" viewBox="0 0 24 24" className={cn("size-5 text-[#10A37F]", className)} fill="currentColor" aria-hidden="true">
-      <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" />
+    <svg role="img" viewBox="0 0 24 24" className={cn("size-5", className)} aria-hidden="true">
+      <path
+        fill="#10A37F"
+        d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"
+      />
     </svg>
   );
 }
@@ -106,40 +106,34 @@ const AI_ASSISTANTS = [
 
 const COMPARISON_ROWS = [
   {
-    feature: "Agent Seat Licensing",
-    vela: "Unlimited seats included in flat workspace",
-    legacy: "$65 – $120 / agent / mo",
-    zadarma: "$39 / agent / mo",
+    feature: "Agent seat planning",
+    vela: "Illustrative tier limits; no live billing",
+    legacy: "Not evaluated",
+    zadarma: "Not evaluated",
   },
   {
-    feature: "Multi-LLM Intelligence",
-    vela: "Native Claude 3.5, GPT-4o & Gemini orchestration",
-    legacy: "Proprietary locked model or paid add-on",
-    zadarma: "Basic transcription only",
+    feature: "AI and predictive dialing",
+    vela: "Sample UI only; no AI or calling service connected",
+    legacy: "Not evaluated",
+    zadarma: "Not evaluated",
   },
   {
-    feature: "Predictive AI Dialer & AMD",
-    vela: "99.4% Answering Machine Detection (<400ms)",
-    legacy: "Basic dialer with high voicemail drop rates",
-    zadarma: "Manual click-to-call / basic autodialer",
+    feature: "Phone numbers and verification",
+    vela: "Example regions; carrier and identity requirements unconfirmed",
+    legacy: "Varies by provider and region",
+    zadarma: "Varies by provider and region",
   },
   {
-    feature: "Identity & Verification",
-    vela: "Zero KYC. Private cryptographic workspace ID",
-    legacy: "Corporate registry, passports, 10-day review",
-    zadarma: "Passport & utility bill verification (3–5 days)",
+    feature: "RDP and VPN",
+    vela: "RDP is required for the proposed agent workflow; VPN is separate",
+    legacy: "Availability and requirements not evaluated",
+    zadarma: "Availability and requirements not evaluated",
   },
   {
-    feature: "Integrated Encrypted Tunnels",
-    vela: "WireGuard mesh across 12 global edge hubs",
-    legacy: "None (requires third-party enterprise VPN)",
-    zadarma: "None (standard SIP / TLS optional)",
-  },
-  {
-    feature: "Disposable Cloud Desktops",
-    vela: "Dedicated Windows 11 remote cloud instances",
-    legacy: "Not available",
-    zadarma: "Not available",
+    feature: "External provider comparison",
+    vela: "Concept preview; no operational services",
+    legacy: "Confirm directly with each provider",
+    zadarma: "Confirm directly with each provider",
   },
 ];
 
@@ -219,10 +213,6 @@ function Home() {
   // Voiso Hero Carousel Slide
   const [heroSlide, setHeroSlide] = useState(0);
 
-  // Email Capture
-  const [workEmail, setWorkEmail] = useState("");
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
-
   // Flow Builder Interactive Test State
   const [activeIvrKey, setActiveIvrKey] = useState<"key1" | "key2" | "key3">("key1");
 
@@ -252,6 +242,14 @@ function Home() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      setHeroSlide((slide) => (slide + 1) % 3);
+    }, 7000);
+    return () => window.clearInterval(id);
+  }, [heroSlide]);
+
   const currentLlmData = LLM_MODELS.find((m) => m.id === selectedLlm) || LLM_MODELS[0];
 
   const handleRunAnalysis = () => {
@@ -261,12 +259,6 @@ function Home() {
       setIsAnalyzing(false);
       setAnalysisDone(true);
     }, 1200);
-  };
-
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!workEmail.trim()) return;
-    setEmailSubmitted(true);
   };
 
   return (
@@ -294,71 +286,54 @@ function Home() {
               </h1>
 
               <p className="max-w-xl text-base sm:text-lg text-slate-600 leading-relaxed">
-                VELA unifies global carrier-grade voice in 130+ countries, omnichannel messaging, AI predictive dialer with 99.4% AMD, and multi-LLM copilots powered by Claude 3.5, GPT-4o, and Gemini into one seamless platform.
+                Explore a product concept for business calling, CRM workflows,
+                predictive dialing, and Windows RDP workstations. This preview
+                uses sample data; phone carriers, payments, AI providers, and
+                RDP provisioning are not connected.
               </p>
 
-              {/* Email Capture Pill Input */}
-              <div className="max-w-md">
-                {emailSubmitted ? (
-                  <div className="flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-200 px-6 py-3 text-sm font-semibold text-emerald-800">
-                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" />
-                    <span>Verification sent to {workEmail}! Connecting workspace...</span>
-                  </div>
-                ) : (
-                  <form
-                    onSubmit={handleEmailSubmit}
-                    className="flex items-center rounded-full border border-slate-200 bg-white p-1.5 shadow-md shadow-slate-200/50 focus-within:border-[#1264d8] focus-within:ring-2 focus-within:ring-[#1264d8]/20 transition-all"
-                  >
-                    <input
-                      type="email"
-                      value={workEmail}
-                      onChange={(e) => setWorkEmail(e.target.value)}
-                      placeholder="Enter your work email"
-                      required
-                      className="w-full bg-transparent px-4 py-2 text-sm text-slate-900 outline-none placeholder:text-slate-400"
-                    />
-                    <button
-                      type="submit"
-                      className="rounded-full bg-[#1264d8] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#0e52b5] shadow-md shadow-[#1264d8]/20 transition-all shrink-0 cursor-pointer"
-                    >
-                      Get Started
-                    </button>
-                  </form>
-                )}
-                <p className="mt-2 text-[11px] text-slate-500">
-                  By clicking "Get Started" you agree to VELA's{" "}
-                  <span className="underline cursor-pointer hover:text-slate-800">Privacy Policy</span> and{" "}
-                  <span className="underline cursor-pointer hover:text-slate-800">Terms of Service</span>.
-                </p>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  to="/checkout"
+                  search={{ plan: "lattice", term: "month" }}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#1264d8] px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#1264d8]/20 transition-all hover:bg-[#0e52b5]"
+                >
+                  Configure a sample order
+                  <ArrowRight className="size-4" />
+                </Link>
+                <Link
+                  to="/integrations"
+                  className="inline-flex min-h-11 items-center rounded-full border border-slate-300 bg-white px-6 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+                >
+                  View RDP & MicroSIP setup
+                </Link>
               </div>
 
-              {/* Ratings Social Proof Badges */}
-              <div className="flex flex-wrap items-center gap-6 sm:gap-8 pt-4 border-t border-slate-200/80">
-                <TrustpilotBadge />
-                <G2Badge />
-                <CapterraBadge />
+              <div className="flex flex-wrap items-center gap-2 border-t border-slate-200/80 pt-4 text-xs text-slate-500">
+                <Shield className="size-4 text-amber-600" />
+                <span>Preview only · no payment, account, number, or desktop is created</span>
               </div>
             </div>
 
-            {/* Right Column: Hero Visual with Real Call Center Agent Photo & Live Telemetry */}
+            {/* Right Column: Illustrative call-center image and sample telemetry */}
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900 aspect-[4/3] sm:aspect-[1/1] max-h-[520px]">
                 <img
                   src={CALL_CENTER_AGENT_IMAGE}
-                  alt="Customer support call center agent with headset operating real-time dialer"
+                  alt="Illustrative customer support agent wearing a headset"
                   className="size-full object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-black/20" />
 
-                {/* Floating Live Inbound Call Badge - Top Left */}
+                {/* Sample call badge */}
                 <div className="absolute top-4 left-4 z-20 flex items-center gap-2.5 rounded-full bg-white/95 backdrop-blur-md px-3.5 py-1.5 shadow-lg border border-slate-200/80">
                   <span className="relative flex size-2.5">
                     <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-75" />
                     <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500" />
                   </span>
                   <div className="text-left">
-                    <p className="text-[10px] font-bold text-slate-900 leading-tight">Live Inbound Call</p>
-                    <p className="text-[9px] font-mono text-emerald-600 font-semibold">+1 (415) 890-4421 · 04:12</p>
+                    <p className="text-[10px] font-bold text-slate-900 leading-tight">Sample call</p>
+                    <p className="text-[9px] font-mono text-emerald-600 font-semibold">Illustrative number · 04:12</p>
                   </div>
                 </div>
 
@@ -384,14 +359,14 @@ function Home() {
                   <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                     <div className="flex items-center gap-2">
                       <ClaudeLogo className="size-4" />
-                      <span className="text-xs font-bold text-slate-900">Claude 3.5 Copilot</span>
+                      <span className="text-xs font-bold text-slate-900">                      Example AI copilot</span>
                     </div>
                     <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                      AMD 99.4% · 380ms
+                      Sample metrics
                     </span>
                   </div>
                   <p className="mt-2 text-xs text-slate-700 leading-relaxed font-medium">
-                    <span className="text-[#1264d8] font-bold">Live Suggestion:</span> Caller requested volume tier pricing. Present 20% annual prepay discount with WireGuard encrypted SIP trunk SLA.
+                    <span className="text-[#1264d8] font-bold">Example suggestion:</span> Caller asked about pricing. This is sample interface content, not a live AI response.
                   </p>
                 </div>
               </div>
@@ -403,7 +378,7 @@ function Home() {
         <div className="mt-14 border-y border-slate-200/80 bg-white/80 py-6">
           <Wrap>
             <p className="text-center text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-4">
-              Trusted by high-growth global customer support & sales leaders
+              Example platform names · no customer or partnership claim
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 opacity-75 grayscale hover:grayscale-0 transition-all">
               {CLIENT_LOGOS.map((client, i) => (
@@ -425,7 +400,7 @@ function Home() {
           <div className="relative overflow-hidden rounded-3xl shadow-2xl transition-all">
             {/* Slide 0: Navy Blue "Embrace AI" */}
             {heroSlide === 0 && (
-              <div className="bg-[#072B56] text-white p-8 sm:p-12 lg:p-16 grid gap-8 lg:grid-cols-12 items-center transition-opacity duration-500">
+              <div className="banner-in bg-[#072B56] text-white p-8 sm:p-12 lg:p-16 grid gap-8 lg:grid-cols-12 items-center">
                 <div className="lg:col-span-7">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
                     Embrace AI
@@ -434,7 +409,9 @@ function Home() {
                     Elevate engagement with AI-powered tools
                   </h2>
                   <p className="mt-4 text-base sm:text-lg text-slate-200 leading-relaxed max-w-xl">
-                    Boost call volume by 400% with our AI Predictive Dialer and gain deep insights with speech analytics, transcriptions, sentiment analysis, summaries, and more — all available in 10+ languages.
+                    Explore sample predictive-dialer and speech-analytics
+                    screens. No calls, transcripts, or AI processing are
+                    connected in this preview.
                   </p>
                   <div className="mt-8">
                     <Link
@@ -504,7 +481,7 @@ function Home() {
 
             {/* Slide 1: Forest Emerald "Intelligent workflows" */}
             {heroSlide === 1 && (
-              <div className="bg-[#054E38] text-white p-8 sm:p-12 lg:p-16 grid gap-8 lg:grid-cols-12 items-center transition-opacity duration-500">
+              <div className="banner-in bg-[#054E38] text-white p-8 sm:p-12 lg:p-16 grid gap-8 lg:grid-cols-12 items-center">
                 <div className="lg:col-span-7">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
                     Intelligent workflows
@@ -513,7 +490,9 @@ function Home() {
                     Smarter flows, faster results
                   </h2>
                   <p className="mt-4 text-base sm:text-lg text-emerald-100 leading-relaxed max-w-xl">
-                    Build and automate call routing with a visual no-code interface. Set up IVR menus, AI chatbots, and skill-based queues that reduce caller abandonment to near zero.
+                    Explore illustrative IVR, chatbot, and skill-based queue
+                    concepts. This demo does not route calls or connect to a
+                    live contact center.
                   </p>
                   <div className="mt-8">
                     <a
@@ -549,7 +528,7 @@ function Home() {
 
             {/* Slide 2: Deep Royal "Omnichannel" */}
             {heroSlide === 2 && (
-              <div className="bg-[#1E1B4B] text-white p-8 sm:p-12 lg:p-16 grid gap-8 lg:grid-cols-12 items-center transition-opacity duration-500">
+              <div className="banner-in bg-[#1E1B4B] text-white p-8 sm:p-12 lg:p-16 grid gap-8 lg:grid-cols-12 items-center">
                 <div className="lg:col-span-7">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
                     Many channels, one platform
@@ -572,7 +551,7 @@ function Home() {
 
                 <div className="lg:col-span-5 flex items-center justify-center">
                   <div className="rounded-2xl bg-white p-5 shadow-2xl text-fg w-full max-w-md">
-                    <p className="text-xs font-bold text-muted mb-3">Live Channel Synchronization</p>
+                    <p className="text-xs font-bold text-muted mb-3">Example channel overview</p>
                     <div className="grid grid-cols-4 gap-2 text-center text-xs">
                       {OMNI_CHANNELS.slice(0, 8).map((c) => (
                         <div key={c.id} className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
@@ -1195,7 +1174,7 @@ function Home() {
                       </div>
                     </div>
                     <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-                      Verified Client
+                      Sample contact
                     </span>
                   </div>
 
@@ -1272,6 +1251,12 @@ function Home() {
                 className="rounded-full border border-white/30 px-6 py-2.5 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
               >
                 Explore All Integrations &gt;
+              </Link>
+              <Link
+                to="/integrations"
+                className="rounded-full border border-white/30 px-6 py-2.5 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
+              >
+                CRM & MicroSIP Setup
               </Link>
               <Link
                 to="/pricing"
@@ -1366,7 +1351,7 @@ function Home() {
                   <currentLlmData.Logo className="size-7" />
                   <div>
                     <h3 className="text-xl font-bold text-fg">{currentLlmData.name} Playground</h3>
-                    <p className="text-xs text-muted">Official model benchmarked on live carrier audio streams</p>
+                    <p className="text-xs text-muted">Illustrative model details · no live audio or AI service is connected</p>
                   </div>
                 </div>
                 <button
@@ -1386,7 +1371,7 @@ function Home() {
                   ) : (
                     <>
                       <Zap className="size-3.5" />
-                      <span>Run Live Analysis</span>
+                      <span>Show sample output</span>
                     </>
                   )}
                 </button>
@@ -1410,14 +1395,14 @@ function Home() {
                     {isAnalyzing ? (
                       <div className="flex items-center gap-2 text-volt py-2">
                         <span className="size-2 rounded-full bg-volt animate-ping" />
-                        <span>Streaming inference token by token...</span>
+                        <span>Showing saved sample output...</span>
                       </div>
                     ) : (
                       <div>
                         {analysisDone && (
                           <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
                             <CheckCircle2 className="size-3.5" />
-                            <span>Inference complete · 99.4% sentiment confidence</span>
+                            <span>Sample output · not generated by AI</span>
                           </div>
                         )}
                         <p>{currentLlmData.sampleOutput}</p>
@@ -1454,9 +1439,9 @@ function Home() {
             {/* Right: Human Network Operations Center */}
             <div className="lg:col-span-5 relative overflow-hidden rounded-3xl border border-line shadow-xl bg-slate-900 min-h-[360px] flex flex-col justify-end p-6">
               <img
-                src={TELECOM_NETWORK_IMAGE}
-                alt="Human telecommunications engineer monitoring global carrier network operations"
-                className="absolute inset-0 size-full object-cover"
+                src={COPILOT_AGENT_IMAGE}
+                alt="Support agent on a live call with an AI copilot suggesting the next reply"
+                className="absolute inset-0 size-full object-cover object-top"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/40 to-transparent" />
 
@@ -1466,10 +1451,11 @@ function Home() {
                   Multi-Model Orchestration
                 </span>
                 <h4 className="mt-3 text-xl font-bold text-white">
-                  Real-Time Conversational Co-pilot
+                  Example Conversational Co-pilot
                 </h4>
                 <p className="mt-1 text-xs text-slate-300 leading-relaxed">
-                  Your agents never face tricky customer objections alone. AI listens, cross-checks documentation, and suggests closed-deal tactics in real time.
+                  Example interface only. No live call listening, document
+                  search, or real-time AI suggestions are connected.
                 </p>
               </div>
             </div>
@@ -1513,19 +1499,21 @@ function Home() {
         </Wrap>
       </section>
 
-      {/* 11. SECTION: HEAD-TO-HEAD COMPARISON TABLE */}
+      {/* 11. SECTION: SERVICE READINESS TABLE */}
       <section id="trust" data-reveal className="scroll-mt-24 py-20 md:py-28 bg-white border-b border-line">
         <Wrap>
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 rounded-full border border-volt/20 bg-volt-light px-3 py-1 text-xs font-semibold text-volt">
               <Shield className="size-3.5" />
-              <span>Transparent Comparison</span>
+              <span>Service readiness</span>
             </div>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl text-fg">
-              Why modern teams choose VELA
+              Review the concept and what is not live
             </h2>
             <p className="mt-3 text-base text-muted">
-              Built from scratch for teams requiring real privacy, zero bureaucratic onboarding, and predictable flat workspace billing.
+              These are planning examples, not a comparison with other vendors.
+              Live rates, compliance requirements, and provider capabilities
+              have not been verified.
             </p>
           </div>
 
@@ -1537,8 +1525,8 @@ function Home() {
                   <Sparkles className="size-3.5" />
                   VELA Communications Cloud
                 </div>
-                <div className="col-span-2 text-muted">Legacy CCaaS</div>
-                <div className="col-span-2 text-muted">Zadarma</div>
+                <div className="col-span-2 text-muted">Live status</div>
+                <div className="col-span-2 text-muted">Provider details</div>
               </div>
 
               <div className="divide-y divide-line">
@@ -1612,12 +1600,15 @@ function Home() {
       <section data-reveal className="py-16 md:py-20 bg-gradient-to-r from-volt via-[#0052cc] to-[#0d4eae] text-white">
         <Wrap className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           <div className="max-w-2xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-white/80">Get Started in 60 Seconds</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-white/80">Configure a sample order</span>
             <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
               Ready to scale human conversations with AI?
             </h2>
             <p className="mt-3 text-base text-white/85 leading-relaxed">
-              Activate your workspace today with zero KYC hurdles. Connect your team, provision 130+ country numbers, and launch Claude & GPT-4o powered workflows.
+              Review example phone-number, required RDP desktop, VPS, and
+              dedicated-server options. Live service requires connected
+              payment, carrier, and desktop providers; none are currently
+              configured.
             </p>
           </div>
 
@@ -1818,7 +1809,7 @@ function InteractiveTelecomIsland({
 
       {activeTab === "edge" && (
         <div className="mt-4 space-y-2 max-h-72 overflow-y-auto pr-1">
-          <p className="text-xs text-muted mb-3">Live latency to global WebRTC & SIP media gateways:</p>
+          <p className="text-xs text-muted mb-3">Illustrative latency values · no media gateways are connected:</p>
           {REGIONS.slice(0, 6).map((r) => (
             <div
               key={r.id}
@@ -1828,7 +1819,7 @@ function InteractiveTelecomIsland({
                 <Globe className="size-4 text-volt" />
                 <span className="font-semibold text-fg">{r.city}</span>
               </div>
-              <span className="font-mono font-semibold text-emerald-600">{r.latencyMs} ms</span>
+              <span className="font-mono font-semibold text-emerald-600">{r.ms} ms</span>
             </div>
           ))}
         </div>

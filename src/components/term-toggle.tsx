@@ -10,8 +10,8 @@ export function TermToggle({ term, onChange }: { term: Term; onChange: (term: Te
     >
       {(
         [
-          ["month", "Monthly Billing"],
-          ["year", "Annual · Save 15%"],
+          ["month", "Monthly estimate"],
+          ["year", "Annual estimate"],
         ] as const
       ).map(([value, label]) => (
         <button

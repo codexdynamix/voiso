@@ -3,8 +3,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import {
   DIDS,
-  phraseFor,
-  type AssetId,
   type PlanId,
   type ProtocolId,
   type Term,
@@ -27,25 +25,16 @@ export type Sms = {
   at: number;
 };
 
-type SettleInput = {
-  planId: PlanId;
-  term: Term;
-  asset: AssetId;
-  callsign: string;
-  invoiceId: string;
-};
-
 type VelaState = {
   callsign: string;
   planId: PlanId | null;
   term: Term;
-  asset: AssetId;
   recovery: string[] | null;
   recoverySeen: boolean;
   active: boolean;
-  invoiceId: string | null;
   did: string;
   ownedDids: string[];
+  includedDids: string[];
   callStatus: CallStatus;
   callPeer: string;
   callDirection: "out" | "in";
@@ -59,6 +48,9 @@ type VelaState = {
   vpnOn: boolean;
   killSwitch: boolean;
   machineId: string;
+  machineIds: string[];
+  selectedVpsId: string | null;
+  selectedDedicatedId: string | null;
   deskOpen: boolean;
   setDid: (id: string) => void;
   attachDid: (id: string) => void;
@@ -76,7 +68,6 @@ type VelaState = {
   sendSms: (to: string, body: string) => void;
   connectVpn: () => void;
   disconnectVpn: () => void;
-  settle: (input: SettleInput) => void;
   ackRecovery: () => void;
   resetWorkspace: () => void;
 };
@@ -100,13 +91,12 @@ export const useVela = create<VelaState>()(
       callsign: "",
       planId: null,
       term: "month",
-      asset: "usdt",
       recovery: null,
       recoverySeen: false,
       active: false,
-      invoiceId: null,
       did: DIDS[0].id,
       ownedDids: [],
+      includedDids: [],
       callStatus: "idle",
       callPeer: "",
       callDirection: "out",
@@ -120,6 +110,9 @@ export const useVela = create<VelaState>()(
       vpnOn: false,
       killSwitch: true,
       machineId: "dx-04",
+      machineIds: [],
+      selectedVpsId: null,
+      selectedDedicatedId: null,
       deskOpen: false,
       setDid: (id) => set({ did: id }),
       attachDid: (id) => {
@@ -215,24 +208,6 @@ export const useVela = create<VelaState>()(
       },
       connectVpn: () => set({ vpnOn: true }),
       disconnectVpn: () => set({ vpnOn: false }),
-      settle: ({ planId, term, asset, callsign, invoiceId }) => {
-        const included = planId === "relay" ? 1 : planId === "lattice" ? 3 : 8;
-        const defaults = DIDS.slice(0, included).map((did) => did.id);
-        set({
-          active: true,
-          planId,
-          term,
-          asset,
-          callsign,
-          invoiceId,
-          recovery: phraseFor(callsign),
-          recoverySeen: false,
-          ownedDids: defaults,
-          did: defaults[0] ?? DIDS[0].id,
-          machineId: planId === "relay" ? "pool-1" : "dx-04",
-          deskOpen: false,
-        });
-      },
       ackRecovery: () => set({ recoverySeen: true }),
       resetWorkspace: () => {
         clearDial();
@@ -242,8 +217,8 @@ export const useVela = create<VelaState>()(
           active: false,
           recovery: null,
           recoverySeen: false,
-          invoiceId: null,
           ownedDids: [],
+          includedDids: [],
           did: DIDS[0].id,
           vpnOn: false,
           deskOpen: false,
@@ -253,23 +228,44 @@ export const useVela = create<VelaState>()(
           recents: [],
           messages: [],
           machineId: "dx-04",
+          machineIds: [],
+          selectedVpsId: null,
+          selectedDedicatedId: null,
         });
       },
     }),
     {
       name: "vela-workspace",
+      version: 1,
+      migrate: (persistedState, version) => {
+        if (version < 1 && persistedState && typeof persistedState === "object") {
+          return {
+            ...(persistedState as Partial<VelaState>),
+            active: false,
+            recovery: null,
+            recoverySeen: false,
+            did: DIDS[0].id,
+            ownedDids: [],
+            includedDids: [],
+            vpnOn: false,
+            deskOpen: false,
+            recents: [],
+            messages: [],
+          } as VelaState;
+        }
+        return persistedState as VelaState;
+      },
       skipHydration: true,
       partialize: (state) => ({
         callsign: state.callsign,
         planId: state.planId,
         term: state.term,
-        asset: state.asset,
         recovery: state.recovery,
         recoverySeen: state.recoverySeen,
-        active: state.active,
-        invoiceId: state.invoiceId,
+        active: false,
         did: state.did,
         ownedDids: state.ownedDids,
+        includedDids: state.includedDids,
         recents: state.recents,
         messages: state.messages,
         regionId: state.regionId,
@@ -277,6 +273,9 @@ export const useVela = create<VelaState>()(
         vpnOn: state.vpnOn,
         killSwitch: state.killSwitch,
         machineId: state.machineId,
+        machineIds: state.machineIds,
+        selectedVpsId: state.selectedVpsId,
+        selectedDedicatedId: state.selectedDedicatedId,
       }),
     },
   ),

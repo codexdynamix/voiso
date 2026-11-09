@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#f8fbff"/><stop offset="1" stop-color="#e7f0fa"/></linearGradient>
+    <filter id="shadow" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#173553" flood-opacity=".14"/></filter>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <text x="54" y="66" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="2.5" fill="#46617e">BEFORE YOU CONNECT</text>
+  <text x="54" y="106" font-family="Segoe UI,Arial,sans-serif" font-size="26" font-weight="600" fill="#182b40">Have these details ready</text>
+  <g filter="url(#shadow)">
+    <rect x="54" y="148" width="850" height="80" rx="14" fill="#fff" stroke="#d8e2ee"/>
+    <rect x="54" y="244" width="850" height="80" rx="14" fill="#fff" stroke="#d8e2ee"/>
+    <rect x="54" y="340" width="850" height="80" rx="14" fill="#fff" stroke="#d8e2ee"/>
+  </g>
+  <circle cx="101" cy="188" r="20" fill="#edf4ff"/><path d="M92 180h18v13H92zM98 193v5m-4 0h12" fill="none" stroke="#276baa" stroke-width="2"/>
+  <text x="143" y="184" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#718198">REMOTE COMPUTER</text>
+  <text x="143" y="207" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" fill="#24374d">PC name or IP address</text>
+  <circle cx="101" cy="284" r="20" fill="#edf4ff"/><circle cx="101" cy="278" r="6" fill="none" stroke="#276baa" stroke-width="2"/><path d="M89 296c1-8 23-8 24 0" fill="none" stroke="#276baa" stroke-width="2"/>
+  <text x="143" y="280" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#718198">WINDOWS SIGN-IN</text>
+  <text x="143" y="303" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" fill="#24374d">Approved account and MFA method</text>
+  <circle cx="101" cy="380" r="20" fill="#edf4ff"/><path d="M101 366v15m-7-7 7 7 7-7m-17 16h20" fill="none" stroke="#276baa" stroke-width="2"/>
+  <text x="143" y="376" font-family="Segoe UI,Arial,sans-serif" font-size="13" fill="#718198">NETWORK ACCESS</text>
+  <text x="143" y="399" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" fill="#24374d">VPN or gateway details, if required</text>
+  <circle cx="290" cy="190" r="155" fill="none" stroke="#e33b36" stroke-width="6"/>
+  <path d="M637 116C581 136 521 151 464 168" fill="none" stroke="#e33b36" stroke-width="6" stroke-linecap="round"/>
+  <path d="m451 155 13 14-18 4" fill="none" stroke="#e33b36" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="54" y="457" width="850" height="42" rx="9" fill="#fff1f0"/>
+  <text x="76" y="484" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="600" fill="#8f302d">Use connection details supplied by your IT administrator.</text>
+</svg>

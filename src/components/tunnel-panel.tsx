@@ -64,7 +64,7 @@ export function TunnelPanel() {
     URL.revokeObjectURL(url);
   }
 
-  const status = handshaking ? "Handshaking" : vpnOn ? "Active" : killSwitch ? "Held" : "Disconnected";
+  const status = handshaking ? "Simulating handshake" : vpnOn ? "Preview active" : "Preview disconnected";
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
@@ -96,7 +96,7 @@ export function TunnelPanel() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs uppercase tracking-wider font-semibold text-muted">
-                    WireGuard Tunnel
+                    Example WireGuard setup
                   </span>
                   <span
                     className={cn(
@@ -115,8 +115,12 @@ export function TunnelPanel() {
               size="lg"
               className={cn(vpnOn && "hover:border-red-500/50 hover:text-red-400")}
             >
-              {handshaking ? "Cancel Handshake" : vpnOn ? "Disconnect Tunnel" : "Connect to Gateway"}
+              {handshaking ? "Cancel simulation" : vpnOn ? "Stop preview" : "Simulate tunnel"}
             </Button>
+            <p className="mt-3 text-xs leading-relaxed text-amber-200">
+              Preview only: no VPN tunnel is created and this control does not
+              protect or route your device traffic.
+            </p>
           </div>
 
           {/* Network IP & Region Metadata */}
@@ -131,14 +135,14 @@ export function TunnelPanel() {
               </div>
 
               <div>
-                <span className="text-muted block">Virtual IP (IPv4)</span>
+                <span className="text-muted block">Example IP (not allocated)</span>
                 <span className="font-mono font-semibold text-white mt-1 block">
                   {vpnOn ? address : "Not Assigned"}
                 </span>
               </div>
 
               <div>
-                <span className="text-muted block">Measured Roundtrip</span>
+                <span className="text-muted block">Example roundtrip</span>
                 <span className="font-mono font-semibold text-ios-green mt-1 block tabular-nums">
                   {region.ms} ms latency
                 </span>
@@ -148,7 +152,7 @@ export function TunnelPanel() {
             {!vpnOn && killSwitch && (
               <div className="mt-4 pt-3 border-t border-white/5 flex items-center gap-2 text-xs text-volt">
                 <ShieldAlert className="size-4 shrink-0" />
-                <span>Kill switch active: Network adapter drops raw packets until handshake completes.</span>
+                <span>Preview toggle only. It does not block or control network traffic.</span>
               </div>
             )}
           </div>
@@ -158,7 +162,7 @@ export function TunnelPanel() {
             <div>
               <p className="text-sm font-semibold text-white">Network Kill Switch</p>
               <p className="text-xs text-muted mt-0.5">
-                Block all unencrypted system traffic if the WireGuard tunnel drops unexpectedly.
+                Example setting only; it cannot control network traffic in this preview.
               </p>
             </div>
             <Switch.Root
@@ -200,13 +204,13 @@ export function TunnelPanel() {
         <div className="mt-8 pt-5 border-t border-line flex flex-wrap items-center justify-between gap-4">
           <p className="text-xs text-muted">
             {dedicated
-              ? "Dedicated exit IP allocated to your callsign."
-              : "High-reputation shared egress IP pool. Dedicated IP available on Foundry."}
+              ? "Example dedicated exit IP setting; no IP is allocated."
+              : "Example shared egress setting; no live IP pool is connected."}
           </p>
 
           <Button variant="line" size="sm" onClick={download}>
             <Download className="size-4" />
-            <span>Download .conf Profile</span>
+            <span>Download sample profile (not usable)</span>
           </Button>
         </div>
       </div>
@@ -216,9 +220,9 @@ export function TunnelPanel() {
         <div className="flex items-center justify-between border-b border-line pb-4">
           <div>
             <p className="text-xs uppercase tracking-wider text-muted font-semibold">Global Gateways</p>
-            <span className="text-sm font-semibold text-white">12 Available Regions</span>
+            <span className="text-sm font-semibold text-white">12 example regions</span>
           </div>
-          <span className="text-[11px] font-mono text-ios-green">All Nominal</span>
+          <span className="text-[11px] font-mono text-amber-200">Sample data</span>
         </div>
 
         <ul className="mt-4 space-y-2 max-h-[460px] overflow-y-auto pr-1">
@@ -248,7 +252,7 @@ export function TunnelPanel() {
                   </div>
 
                   <div className="mt-2.5 flex items-center justify-between gap-3 text-[11px] text-muted">
-                    <span>Node load</span>
+                    <span>Example node load</span>
                     <span className="font-mono tabular-nums">{item.load}%</span>
                   </div>
 

@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { Search, Globe, Plus, Check } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Search, Globe, Plus } from "lucide-react";
 import { VoicePanel } from "@/components/voice-panel";
 import { Wrap } from "@/components/shell";
 import { DIDS, planById } from "@/lib/catalog";
-import { useVela } from "@/lib/store";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 
 export const Route = createFileRoute("/voice")({
@@ -14,7 +12,7 @@ export const Route = createFileRoute("/voice")({
       { title: "Voice & Dialer — Vela Communications Cloud" },
       {
         name: "description",
-        content: "Browser WebRTC softphone, global DID virtual numbers, SMS, and predictive dialer without KYC.",
+        content: "Preview a business softphone and predictive-dialer workflow with example phone-number regions. Carrier calling, SMS, and number ordering are not connected.",
       },
     ],
   }),
@@ -22,11 +20,7 @@ export const Route = createFileRoute("/voice")({
 });
 
 function VoicePage() {
-  const owned = useVela((state) => state.ownedDids);
-  const active = useVela((state) => state.active);
-  const planId = useVela((state) => state.planId);
-  const attachDid = useVela((state) => state.attachDid);
-  const plan = planById(active ? (planId ?? "lattice") : "lattice");
+  const plan = planById("lattice");
 
   const [query, setQuery] = useState("");
 
@@ -45,15 +39,17 @@ function VoicePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1 text-xs text-muted backdrop-blur-md mb-3">
               <span className="size-1.5 rounded-full bg-ios-green animate-pulse" />
-              <span className="font-semibold text-white">Direct WebRTC Telephony</span>
+              <span className="font-semibold text-white">Voice & number options · Preview</span>
             </div>
 
             <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl text-white">
-              Carrier voice without per-agent licensing.
+              Review phone regions and dialer options.
             </h1>
 
             <p className="mt-4 text-base sm:text-lg text-muted leading-relaxed">
-              Outbound, inbound, SMS, predictive automated dialer, and IVR queues. Present an international DID you hold. Unlimited seats are already covered in your flat workspace plan.
+              Explore the voice workflow and configure a phone region in the
+              order builder. Calls, SMS, carrier service, and number ordering
+              are not live in this preview.
             </p>
           </div>
         </Wrap>
@@ -67,10 +63,17 @@ function VoicePage() {
         <div className="mt-16 pt-12 border-t border-line">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-volt">Carrier Number Fleet</p>
-              <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-white">International DIDs Inventory</h2>
+              <p className="text-xs font-semibold uppercase tracking-wider text-volt">Phone number options</p>
+              <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-white">Example number regions</h2>
               <p className="mt-1 text-xs sm:text-sm text-muted">
-                Your <span className="text-white font-medium">{plan.name}</span> plan includes {plan.dids} free numbers. Attach extra numbers instantly in sandbox.
+                Choose a region to prefill the order builder. The {plan.name} plan
+                example includes up to {plan.dids} numbers.
+              </p>
+              <p className="mt-2 max-w-3xl text-xs leading-relaxed text-amber-200">
+                These are illustrative examples, not live or reservable numbers.
+                Carrier coverage, exact number, monthly charges, local
+                documentation, and activation must be confirmed before a real
+                order can be placed.
               </p>
             </div>
 
@@ -87,9 +90,8 @@ function VoicePage() {
           </div>
 
           <div className="mt-6 ios-glass rounded-3xl overflow-hidden border border-white/10 divide-y divide-line">
-            {filteredDids.map((did, index) => {
-              const included = index < plan.dids;
-              const held = owned.includes(did.id) || included;
+            {filteredDids.map((did) => {
+              const included = DIDS.findIndex((item) => item.id === did.id) < plan.dids;
               return (
                 <div
                   key={did.id}
@@ -103,7 +105,7 @@ function VoicePage() {
                     <div>
                       <p className="font-mono text-sm font-semibold text-white">{did.id}</p>
                       <p className="text-xs text-muted">
-                        {did.city}, {did.country} · Voice & SMS Enabled
+                        {did.city}, {did.country} · example number
                       </p>
                     </div>
                   </div>
@@ -113,34 +115,34 @@ function VoicePage() {
                       {included ? (
                         <span className="text-ios-green font-semibold">Included in {plan.name}</span>
                       ) : (
-                        `${did.monthly} USDT / mo`
+                        `Example rate: $${did.monthly} / mo*`
                       )}
                     </span>
 
-                    <Button
-                      variant={held ? "line" : "primary"}
-                      size="sm"
-                      disabled={held}
-                      onClick={() => attachDid(did.id)}
-                      className={cn(held && "border-ios-green/40 text-ios-green bg-ios-green/10")}
-                    >
-                      {held ? (
-                        <>
-                          <Check className="size-3.5" />
-                          <span>Active on Line</span>
-                        </>
-                      ) : (
-                        <>
-                          <Plus className="size-3.5" />
-                          <span>Attach DID</span>
-                        </>
+                    <Link
+                      to="/checkout"
+                      search={{
+                        plan: "lattice",
+                        term: "month",
+                        phones: [did.id],
+                      }}
+                      className={cn(
+                        "inline-flex h-9 items-center justify-center gap-2 rounded-xl px-3 text-xs font-medium transition-colors",
+                        "bg-volt text-black hover:bg-volt/90",
                       )}
-                    </Button>
+                    >
+                      <Plus className="size-3.5" />
+                      <span>Select region</span>
+                    </Link>
                   </div>
                 </div>
               );
             })}
           </div>
+          <p className="mt-3 text-[11px] text-muted">
+            *Illustrative allowance and rates only; selecting a region does not
+            reserve, purchase, or activate a number.
+          </p>
         </div>
       </Wrap>
     </div>
